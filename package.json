@@ -1,0 +1,24 @@
+{
+  "name": "urbancart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "devStart": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
+    "mogoose": "^0.0.1-security",
+    "mongoose": "^5.2.8"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.20"
+  }
+}
