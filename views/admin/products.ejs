@@ -1,0 +1,254 @@
+<div class="container-xxl position-relative bg-white d-flex p-0">
+    <div class="content">
+        <!-- Table Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <div class="d-flex justify-content-between pb-3">
+                            <h6 class="mb-4">Products List</h6>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#addNewProduct" data-whatever="@addProduct">Add Product</button>
+                            <div class="modal fade" id="addNewProduct" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <form action="/admin/addProduct" method="post"
+                                                enctype="multipart/form-data">
+                                                <div class="form-group">
+                                                    <label for="brand" class="col-form-label">Brand</label>
+                                                    <input name="brand" type="text" class="form-control" id="brand">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="tittle" class="col-form-label">Tittle</label>
+                                                    <input name="tittle" type="text" class="form-control" id="tittle">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="category" class="col-form-label">Category</label>
+                                                    <select class="form-select" aria-label="Default select example"
+                                                        name="category">
+                                                        <% showCategory.forEach((element)=>{ %>
+                                                            <option class="form-control" type="text">
+                                                                <%= element.category %>
+                                                            </option>
+                                                            <% }) %>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="price" class="col-form-label">Price</label>
+                                                    <input name="price" type="text" class="form-control" id="price">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="discount" class="col-form-label">Discount</label>
+                                                    <input name="discount" type="text" class="form-control"
+                                                        id="discount">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="discription" class="col-form-label">Discription</label>
+                                                    <input name="discription" type="text" class="form-control"
+                                                        id="discription">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="image" class="col-form-label">Image</label>
+                                                    <input name="images" type="file" class="form-control" id="image"
+                                                        accept="image/*" multiple>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="stock" class="col-form-label">Stock</label>
+                                                    <input name="stock" type="text" class="form-control" id="stock">
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Add</button>
+                                            </form>
+                                        </div>
+
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">Products List</h6>
+
+                        <div class="table-responsive">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">NO</th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Brand</th>
+                                        <th scope="col">Tittle</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Discount</th>
+                                        <th scope="col">Discription</th>
+                                        <th scope="col">stock</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% showProducts.forEach((el,index)=>{ %>
+                                        <tr>
+                                            <th scope="row">
+                                                <%= index+1 %>
+                                            </th>
+                                            <td>
+                                                <% for(let x in el.images) { %>
+                                                    <img src="<%= el.images[x] %> " alt="product" width="50">
+                                                    <% } %>
+                                            </td>
+                                            <td>
+                                                <%= el.brand %>
+                                            </td>
+                                            <td>
+                                                <%= el.tittle %>
+                                            </td>
+                                            <td>
+                                                <%= el.category %>
+                                            </td>
+                                            <td>
+                                                <%= el.price %>
+                                            </td>
+                                            <td>
+                                                <%= el.discount %>
+                                            </td>
+                                            <td>
+                                                <%= el.discription %>
+                                            </td>
+                                            <td>
+                                                <%= el.stock %>
+                                            </td>
+                                            <td>
+                                                <a href="/admin/editProduct/<%= el._id %>" data-toggle="modal"
+                                                    data-target="#editProduct<%= el._id %>"
+                                                    data-whatever="@editProduct"><i
+                                                        class="fa-solid fa-file-pen"></i></a>
+
+                                                <div class="modal fade" id="editProduct<%= el._id %>" tabindex="-1"
+                                                    role="dialog" aria-labelledby="exampleModalLabel"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Edit
+                                                                    Product</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+
+
+                                                            <div class="modal-body text-start">
+                                                                <form action="/admin/editProduct/<%= el._id %>"
+                                                                    method="post" enctype="multipart/form-data">
+                                                                    <div class="form-group">
+                                                                        <label for="brand"
+                                                                            class="col-form-label">Brand</label>
+                                                                        <input name="brand" type="text"
+                                                                            class="form-control" id="brand"
+                                                                            value="<%= el.brand  %>">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="tittle"
+                                                                            class="col-form-label">Tittle</label>
+                                                                        <input name="tittle" type="text"
+                                                                            class="form-control" id="tittle"
+                                                                            value="<%= el.tittle %>">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="category"
+                                                                            class="col-form-label">Category</label>
+                                                                        <select class="form-select form-control"
+                                                                            name="category" type="text" id="category"
+                                                                            aria-label="Default select example">
+                                                                            <% showCategory.forEach((element)=>{ %>
+                                                                                <option <%
+                                                                                    if(element.category==el.category){%>
+                                                                                    selected <%} %> > <%=
+                                                                                            element.category %>
+                                                                                </option>
+                                                                                <% }) %>
+                                                                        </select>
+
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="discount"
+                                                                            class="col-form-label">Discount</label>
+                                                                        <input name="discount" type="text"
+                                                                            class="form-control" id="discount"
+                                                                            value="<%= el.discount %>">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="price"
+                                                                            class="col-form-label">Price</label>
+                                                                        <input name="price" type="text"
+                                                                            class="form-control" id="price"
+                                                                            value="<%= el.price %>">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="discription"
+                                                                            class="col-form-label">Discription</label>
+                                                                        <input name="discription" type="text"
+                                                                            class="form-control" id="discription"
+                                                                            value="<%= el.discription %>">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="image"
+                                                                            class="col-form-label">Image</label>
+                                                                        <input name="images" type="file"
+                                                                            class="form-control" id="image"
+                                                                            value="<%= el.images %> " accept="image/*"
+                                                                            multiple>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="stock"
+                                                                            class="col-form-label">Stock</label>
+                                                                        <input name="stock" type="text"
+                                                                            class="form-control" id="stock"
+                                                                            value="<%= el.stock %>">
+                                                                    </div>
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary">Edit</button>
+                                                                </form>
+                                                            </div>
+
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <a href="/admin/deleteProduct/<%= el._id %>"
+                                                    onclick="return confirm ('Do you want to remove item?')"><i
+                                                        class="fa-solid fa-trash-can"></i></a>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,172 @@
+<section style="background-color: #508bfc; height: 140vh;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <form class="card-body px-5 pt-3 text-center" method="post" action="/userSignUp" id="signupForm">
+
+                        <h2 class="mb-2 mt-3 text-warning">URBANCART</h2>
+                        <h3 class="mb-2 mt-3">Sign up</h3>
+
+                        <div class="form-outline mb-3">
+                            <input name="fullName" type="text" id="name" class="form-control form-control-lg" />
+                            <label class="form-label" id="name" for="typeEmailX-2">Full Name</label>
+                            <h5 id="usercheck" style="color: red;">
+                                **Username is missing
+                            </h5>
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <input name="email" type="email" id="typeEmailX-2" class="form-control form-control-lg" />
+                            <label class="form-label" id="email" for="typeEmailX-2">Email</label><small id="emailvalid"
+                                class="form-text text-muted invalid-feedback">
+                                Your email must be a valid email
+                            </small>
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <input name="phone" type="tel" id="phone" class="form-control form-control-lg" />
+                            <label class="form-label" id="phone" for="phone">Phone</label>
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <input name="nPassword" type="password" id="typePasswordX-2"
+                                class="form-control form-control-lg" />
+                            <label class="form-label" id="password" for="typePasswordX-2">New Password</label>
+                            <h5 id="passcheck" style="color: red;">
+                                **Please Fill the password
+                            </h5>
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <input name="cPassword" type="password" id="typePasswordX-2"
+                                class="form-control form-control-lg" />
+                            <label class="form-label" id="confirmPassword" for="typePasswordX-2">Confirm
+                                Password</label>
+                            <h5 id="conpasscheck" style="color: red;">
+                                **Password didn't match
+                            </h5>
+                        </div>
+
+                        <button class="btn btn-primary btn-lg btn-block" type="submit" id="submitbtn">Sign up</button>
+
+                        <p><a href="/login">Already have an account</a></p>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+    crossorigin="anonymous"></script>
+
+<!-- Validation with Jquery -->
+<script>
+    $(document).ready(function () {
+        // Validate Username
+        $("#usercheck").hide();
+        let usernameError = true;
+        $("#name").keyup(function () {
+            validateUsername();
+        });
+
+        function validateUsername() {
+            let usernameValue = $("#name").val();
+            if (usernameValue.length == "") {
+                $("#usercheck").show();
+                usernameError = false;
+                return false;
+            } else if (usernameValue.length < 3 || usernameValue.length > 10) {
+                $("#usercheck").show();
+                $("#usercheck").html("**length of username must be between 3 and 10");
+                usernameError = false;
+                return false;
+            } else {
+                $("#usercheck").hide();
+            }
+        }
+
+        //   Validate Email
+        const email = document.getElementById("email");
+        email.addEventListener("blur", () => {
+            let regex = /^([_\-\.0-9a-zA-Z]+)@([_\-\.0-9a-zA-Z]+)\.([a-zA-Z]){2,7}$/;
+            let s = email.value;
+            if (regex.test(s)) {
+                email.classList.remove("is-invalid");
+                emailError = true;
+            } else {
+                email.classList.add("is-invalid");
+                emailError = false;
+            }
+        });
+
+        // Validate Password
+        $("#passcheck").hide();
+        let passwordError = true;
+        $("#password").keyup(function () {
+            validatePassword();
+        });
+        function validatePassword() {
+            let passwordValue = $("#password").val();
+            if (passwordValue.length == "") {
+                $("#passcheck").show();
+                passwordError = false;
+                return false;
+            }
+            if (passwordValue.length < 3 || passwordValue.length > 10) {
+                $("#passcheck").show();
+                $("#passcheck").html(
+                    "**length of your password must be between 3 and 10"
+                );
+                $("#passcheck").css("color", "red");
+                passwordError = false;
+                return false;
+            } else {
+                $("#passcheck").hide();
+            }
+        }
+
+        // Validate Confirm Password
+        $("#conpasscheck").hide();
+        let confirmPasswordError = true;
+        $("#confirmPassword").keyup(function () {
+            validateConfirmPassword();
+        });
+        function validateConfirmPassword() {
+            let confirmPasswordValue = $("#confirmPassword").val();
+            let passwordValue = $("#password").val();
+            if (passwordValue != confirmPasswordValue) {
+                $("#conpasscheck").show();
+                $("#conpasscheck").html("**Password didn't Match");
+                $("#conpasscheck").css("color", "red");
+                confirmPasswordError = false;
+                return false;
+            } else {
+                $("#conpasscheck").hide();
+            }
+        }
+
+        // Submit button
+        $("#submitbtn").click(function () {
+            validateUsername();
+            validatePassword();
+            validateConfirmPassword();
+            validateEmail();
+            if (
+                usernameError == true &&
+                passwordError == true &&
+                confirmPasswordError == true &&
+                emailError == true
+            ) {
+                $('#signupForm').submit(function (evt) {
+                    evt.preventDefault();
+                    window.history.back();
+                });
+                return true;
+            } else {
+                return false;
+            }
+        });
+    });
+</script>

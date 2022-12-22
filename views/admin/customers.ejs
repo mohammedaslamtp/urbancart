@@ -1,0 +1,62 @@
+<div class="container-xxl position-relative bg-white d-flex p-0">
+    <!-- Content Start -->
+    <div class="content">
+        <!-- Table Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <div class="d-flex justify-content-between pb-3">
+                            <h6 class="mb-4">Customers List</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">Customers List</h6>
+                        <div class="table-responsive">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Number</th>
+                                        <th scope="col">Full Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <% showUsers.forEach((el,index)=>{ %>
+                                        <tr>
+                                            <th scope="row">
+                                                <%= index+1 %>
+                                            </th>
+                                            <td>
+                                                <%= el.fullName %>
+                                            </td>
+                                            <td>
+                                                <%= el.email %>
+                                            </td>
+                                            <td>
+                                                <%= el.phone %>
+                                            </td>
+
+                                            <td>
+                                                <% if(el.access===true) { %>
+                                                    <a href="/admin/blockUser/<%= el._id %>"><i
+                                                            class="fa-solid fa-user-slash"></i></a>
+                                                    <% } else { %>
+                                                        <a href="/admin/unBlockUser/<%= el._id %>"><i
+                                                                class="fa-solid fa-unlock"></i></a>
+                                                        <% } %>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

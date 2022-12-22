@@ -1,0 +1,64 @@
+<!--header section start -->
+<header class="header-section bg-warning d-flex align-items-center" style="height: 6em;">
+  <div class="container-fluid bg-warning align-items-center">
+    <div class="row">
+      <div class="col-sm-12 col-lg-3 d-flex align-items-center">
+        <div class="logo"><img src="images/logo.png" /></div>
+      </div>
+      <div class="col-sm-4 col-lg-5">
+        <div class="menu-area">
+          <nav class="navbar navbar-expand-lg">
+            <!-- <a class="navbar-brand" href="#">Menu</a> -->
+            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
+              data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation">
+              <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto align-items-center">
+                <li class="nav-item active">
+                  <a class="nav-link active" href="#">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Orders</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="about.html">About</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="company.html">Company</a>
+                </li>
+                <li class="#" href="#">
+                  <a class="nav-link" href="furnitures.html">Furnitures</a>
+                </li>
+
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="col-sm-8 col-lg-4 d-flex align-items-center">
+        <div class="togle_3">
+
+
+          <div class="left_main">
+            <div class="menu_main">
+              <% if (users) { %>
+                <a href="/userLogOut"><i class="fa fa-fw fa-user"></i> logout </a>
+                <%} else { %>
+                  <a href="/login"><i class="fa fa-fw fa-user"></i> Login </a>
+                  <% } %>
+            </div>
+          </div>
+        </div>
+        <div class="middle_main">
+          <div class="shoping_bag"><img src="images/search-icon.png" /></div>
+        </div>
+        <div class="right_main">
+          <div class="togle_main"><img src="images/shopping-bag.png" /></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</header>
