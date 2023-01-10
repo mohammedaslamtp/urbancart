@@ -1,0 +1,462 @@
+<!-- header here only seprated -->
+<!-- linking costum css category dropdown -->
+<link rel="stylesheet" href="/css/userCategoryDropdown.css" type="text/css">
+<!-- linking end here -->
+
+<!-- top-area Start -->
+<div class="top-area">
+    <div class="header-area">
+        <!-- Start Navigation -->
+        <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy" data-minus-value-desktop="70"
+            data-minus-value-mobile="55" data-speed="1000">
+
+            <!-- Start Top Search -->
+            <div class="top-search">
+                <div class="container">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Search">
+                        <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
+                    </div>
+                </div>
+            </div>
+            <!-- End Top Search -->
+
+            <div class="container">
+                <!-- Start Atribute Navigation -->
+                <div class="attr-nav">
+                    <ul>
+                        <li class="search">
+                            <a href="#"><span class="lnr lnr-magnifier"></span></a>
+                        </li><!--/.search-->
+                        <li class="nav-setting dropdown">
+                            <a href="#"><i class="bi bi-person dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false"></i></a>
+                            <ul class="dropdown-menu">
+                                <% if (users) { %>
+                                    <li><a class="dropdown-item" href="/userProfile">Profile</a></li>
+                                    <li><a class="dropdown-item" href="/wishlist">Wishlist</a></li>
+                                    <li><a class="dropdown-item" href="/userLogOut">Logout</a></li>
+                                    <%} else { %>
+                                        <li><a class="dropdown-item" href="/login">Login</a></li>
+                                        <% } %>
+                            </ul>
+                        </li><!--/.search-->
+
+                        <li class="dropdown <% if(page==" cart"){ %>active <% } %>">
+                                <a href="/userCart" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="bi bi-cart2"></i>
+                                    <% if (users) { %>
+                                        <span class="badge badge-bg-1" id="cart-count">
+                                            <%= users.cart.items.length %>
+                                        </span>
+                                        <% } %>
+                                </a>
+                        </li>
+                    </ul>
+                </div><!--/.attr-nav-->
+                <!-- End Atribute Navigation -->
+
+                <!-- Start Header Navigation -->
+                <div class="navbar-header d-flex">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <button class="toggle-button p-2" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><i
+                            class="fa-solid fa-bars text-dark"></i></button>
+                    <a class="navbar-brand" style="margin-left: 1.5em;padding-top: 1.1em;" href="/">URBANCART</a>
+
+                </div><!--/.navbar-header-->
+                <!-- End Header Navigation -->
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                    <ul class="nav navbar-nav navbar-center" data-in="fadeInDown" data-out="fadeOutUp">
+                        <li class=" nav-item <% if(page==" home"){ %>active <% } %>"><a href="/">Home</a></li>
+                        <li class="nav-item <% if(page==" furnitures"){ %>active <% } %>"><a
+                                    href="/products">Furnitures</a></li>
+                        <li class="nav-item <% if(page==" orders"){ %>active <% } %>"><a href="">Orders</a></li>
+
+                        <li class="nav-item">
+                            <div class="dropdown text-dark">
+                                <a class="dropbtn">Category</a>
+                                <div class="dropdown-content">
+                                    <a href="/products">
+                                        All Products
+                                    </a>
+                                    <% showCategory.forEach((el)=>{ %>
+                                        <a class="dropdown-item" href="/products?category=<%= el._id %>">
+                                            <%=el.category %>
+                                        </a>
+                                        <% }) %>
+                                </div>
+                            </div>
+                        </li>
+                    </ul><!--/.nav -->
+
+                    <!-- style for li to center -->
+                    <style>
+                        .nav li {
+                            width: 100;
+                            height: 100;
+                            display: flex;
+                            align-items: center;
+                        }
+
+                        input {
+                            border-radius: 1em;
+                        }
+                    </style>
+
+
+                </div><!-- /.navbar-collapse -->
+            </div><!--/.container-->
+        </nav><!--/nav-->
+        <!-- End Navigation -->
+    </div><!--/.header-area-->
+    <div class="clearfix"></div>
+
+</div><!-- /.top-area-->
+<!-- top-area End -->
+<!-- header end -->
+
+
+
+<main class="container">
+
+    <!-- sidebar start -->
+    <!--  <button class="toggle-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+        aria-controls="offcanvasWithBothOptions"><i class="fa-solid fa-bars text-dark"></i></button> -->
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+        aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-header ms-auto">
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="list-group list-group-flush costum-border">
+                <li class="list-group-item"><a class="text-decoration-none text-dark" href="/userProfile">
+                        Account details</a>
+                </li>
+                <li class="list-group-item"><a class="text-decoration-none text-dark"
+                        href="/userAddress"><b>Address</b></a>
+                </li>
+                <li class="list-group-item"><a class="text-decoration-none text-dark" href="">Oders</a></li>
+                <li class="list-group-item"><a class="text-decoration-none text-dark" href="">Whishlist</a></li>
+                <li class="list-group-item "><a class="text-decoration-none text-danger" href="">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- sidebar end -->
+
+    <!-- Address card 1 -->
+
+    <section class="row justify-content-center" style="margin-top: 10em;">
+        <% for(let i=0;i<users.addresses.length;i++){ let address=users.addresses[i]%>
+            <div class="col-9 col-sm-8 col-md-8 col-lg-8 mt-5">
+                <div class="card ">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="card-title">Address <%= i+1%>
+                            </h5>
+                            <button onclick="deleteAddress('<%= address._id %>')">
+                                <i class="bi bi-trash text-danger" style="font-size: 1.3em;"></i>
+                            </button>
+                        </div>
+                        <p class="card-text w-75">
+                            <%= address.fullName %>, <%= address.city %>, <%= address.landMark %>, <br>
+                                        <%= address.pincode %>, <%= address.district %>, <%= address.state %>,
+                                                    <%= address.country %>
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#address<%= address._id %>" data-whatever="@mdo">
+                                Edit Address</button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="address<%= address._id %>" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Edit Address</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id='editedForm<%= address._id %>'>
+                                                <form>
+                                                    <div class="form-group col-md-12 col-12">
+                                                        <label for="recipient-name" class="col-form-label">Full
+                                                            Name</label>
+                                                        <input type="text" class="form-control" name="fullName"
+                                                            id="editFullName" value="<%= address.fullName %>">
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-12">
+                                                        <label for="message-text" class="col-form-label">State</label>
+                                                        <input type="text" class="form-control" name="state"
+                                                            id="editState" value="<%=address.state %>">
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-12">
+                                                        <label for="message-text"
+                                                            class="col-form-label">District</label>
+                                                        <input type="text" class="form-control" name="district"
+                                                            id="editDistrict" value="<%=address.district %>">
+                                                    </div>
+                                                    <div class="form-group col-md-12 col-12">
+                                                        <label for="message-text" class="col-form-label">City</label>
+                                                        <input type="text" class="form-control" name="city"
+                                                            id="editCity" value="<%= address.city %>">
+                                                    </div>
+                                                    <div class="form-group col-md-12 col-12">
+                                                        <label for="message-text" class="col-form-label">Land
+                                                            Mark</label>
+                                                        <input type="text" class="form-control" name="landMark"
+                                                            id="editDistrict" value="<%= address.landMark %>">
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-12">
+                                                        <label for="message-text" class="col-form-label">Pincode</label>
+                                                        <input type="text" class="form-control" name="pincode"
+                                                            id="editPincode" value="<%= address.pincode %>">
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-12">
+                                                        <label for="message-text" class="col-form-label">Mobile</label>
+                                                        <input type="tel" class="form-control" name="mobile"
+                                                            id="editMobile" value="<%=address.mobile %>">
+                                                    </div>
+                                                    <div class="form-group col-md-12 col-12">
+                                                        <label for="message-text" class="col-form-label">Country</label>
+                                                        <input type="text" class="form-control" name="country"
+                                                            id="editCountry" value="<%= address.country %>">
+                                                    </div>
+                                                    <div class="w-100 d-flex justify-content-center">
+                                                        <button type="submit" onclick="editAddress('<%= address._id%>')"
+                                                            class="btn btn-primary">Save changes</button>
+                                                    </div>
+                                                </form>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a href="#" style="text-decoration: none;" class="text-warning">Defualt</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+    </section>
+
+    <% if(users.addresses.length==0){ %>
+        <h5 class="text-center">Addresses is empty</h5>
+        <% } %>
+            <section class="row mt-5 mb-5 justify-content-center">
+                <div class="card justify-content-center" style="width: 18rem; height: 15rem;">
+                    <a>
+                        <div title="ADD A NEW ADDRESS" data-toggle="modal" data-target="#addAddressModal"
+                            data-whatever="@mdo" class="card-body d-flex justify-content-center align-items-center">
+                            <i class="bi bi-plus" style="font-size: 8em; color: gray;"></i>
+                        </div>
+                        <!-- add address modal starting here -->
+                        <div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Address</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="addNewAddress">
+                                            <div class="form-group col-md-6 col-12">
+                                                <label for="full-name" class="col-form-label">Full Name</label>
+                                                <div id="fullNameValidate"></div>
+                                                <input type="text" name="fullName" class="form-control" id="fullName"
+                                                    onkeydown="$('#fullNameValidate').html('');$('#fullName').css('border-color','')">
+                                            </div>
+                                            <div class="form-group col-md-6 col-12">
+                                                <label for="message-text" class="col-form-label">Country</label>
+                                                <div id="countyValidate"></div>
+                                                <input type="text" class="form-control" name="country" id="country"
+                                                    onkeydown="$('#countyValidate').html('');$('#country').css('border-color','')">
+                                            </div>
+                                            <div class="form-group col-md-12 col-12">
+                                                <label for="message-text" class="col-form-label">State</label>
+                                                <div id="stateValidate"></div>
+                                                <input type="text" class="form-control" name="state" id="state"
+                                                    onkeydown="$('#stateValidate').html('');$('#state').css('border-color','')">
+                                            </div>
+                                            <div class="form-group col-md-12 col-12">
+                                                <label for="message-text" class="col-form-label">District</label>
+                                                <div id="districtValidate"></div>
+                                                <input type="text" class="form-control" name="district" id="district"
+                                                    onkeydown=" $('#districtValidate').html('');$('#district').css('border-color','')">
+                                            </div>
+
+                                            <div class="form-group col-md-12 col-12">
+                                                <label for="message-text" class="col-form-label">City</label>
+                                                <div id="cityValidate"></div>
+                                                <input type="text" class="form-control" name="city" id="city"
+                                                    onkeydown="$('#cityValidate').html('');$('#city').css('border-color','')">
+                                            </div>
+                                            <div class="form-group col-md-12 col-12">
+                                                <label for="message-text" class="col-form-label">Land mark</label>
+                                                <div id="landMarkValidate"></div>
+                                                <input type="text" class="form-control" name="landMark" id="landMark"
+                                                    onkeydown="$('#landMarkValidate').html('');$('#landMark').css('border-color','')">
+                                            </div>
+                                            <div class="form-group col-md-6 col-12">
+                                                <label for="message-text" class="col-form-label">Pincode</label>
+                                                <div id="pincodeValidate"></div>
+                                                <input type="text" class="form-control" name="pincode" id="pincode"
+                                                    onkeydown="$('#pincodeValidate').html('');$('#pincode').css('border-color','')">
+                                            </div>
+                                            <div class="form-group col-md-6 col-12">
+                                                <label for="message-text" class="col-form-label">Mobile</label>
+                                                <div id="mobileValidate"></div>
+                                                <input type="tel" class="form-control" name="mobile" id="mobile"
+                                                    onkeydown="$('#mobileValidate').html('');$('#mobile').css('border-color', '')">
+                                            </div>
+
+                                            <div class="w-100 d-flex justify-content-center">
+                                                <button type="submit" id="addAddressSubmitBtn"
+                                                    class="btn btn-primary">Add
+                                                    address</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- add address modal end here -->
+                    </a>
+                </div>
+
+            </section>
+</main>
+
+
+<script>
+
+    /* $('#full-name').css('border', 'red') */
+    /*$('#country').css('border', 'red') */
+
+    const formEl = document.querySelector('#addNewAddress');
+    formEl.addEventListener('submit', event => {
+        if ($('#fullName').val().trim().length <= 0 || $('#country').val().trim().length <= 0 || $('#pincode').val().trim().length <= 0 || $('#mobile').val().trim().length <= 0 || $('#state').val().trim().length <= 0 || $('#district').val().trim().length <= 0 || $('#city').val().trim().length <= 0 || $('#landMark').val().trim().length <= 0) {
+            if ($('#fullName').val().trim().length <= 0) {
+                $('#fullNameValidate').html(`<p class="text-danger" style="font-size: small;">Full name is required!</p>`)
+                $('#fullName').css('border-color', 'red')
+
+            } else {
+                $('#fullNameValidate').html('')
+                $('#fullName').css('border-color', '')
+            }
+            if ($('#country').val().trim().length <= 0) {
+                $('#countyValidate').html(`<p class="text-danger" style="font-size: small;">Country is required!</p>`)
+                $('#country').css('border-color', 'red')
+            } else {
+                $('#countyValidate').html('')
+                $('#country').css('border-color', '')
+            }
+            if ($('#pincode').val().trim().length <= 0) {
+                $('#pincodeValidate').html(`<p class="text-danger" style="font-size: small;">Pincode is required!</p>`)
+                $('#pincode').css('border-color', 'red')
+            } else {
+                $('#pincodeValidate').html('')
+                $('#country').css('border-color', '')
+            }
+
+            if ($('#mobile').val().trim().length <= 0) {
+                $('#mobileValidate').html(`<p class="text-danger" style="font-size: small;">Mobile number is required!</p>`)
+                $('#mobile').css('border-color', 'red')
+            } else {
+                $('#mobileValidate').html('')
+                $('#mobile').css('border-color', '')
+            }
+
+            if ($('#state').val().trim().length <= 0) {
+                $('#stateValidate').html(`<p class="text-danger" style="font-size: small;">State is required!</p>`)
+                $('#state').css('border-color', 'red')
+            } else {
+                $('#stateValidate').html('')
+                $('#country').css('border-color', '')
+            }
+
+            if ($('#district').val().trim().length <= 0) {
+                $('#districtValidate').html(`<p class="text-danger" style="font-size: small;">District is required!</p>`)
+                $('#district').css('border-color', 'red')
+            } else {
+                $('#districtValidate').html('')
+                $('#district').css('border-color', '')
+            }
+
+            if ($('#city').val().trim().length <= 0) {
+                $('#cityValidate').html(`<p class="text-danger" style="font-size: small;">city is required!</p>`)
+                $('#city').css('border-color', 'red')
+            } else {
+                $('#cityValidate').html('')
+                $('#city').css('border-color', '')
+            }
+            if ($('#landMark').val().trim().length <= 0) {
+                $('#landMarkValidate').html(`<p class="text-danger" style="font-size: small;">land mark is required!</p>`)
+                $('#landMark').css('border-color', 'red')
+
+            } else {
+                $('#landMarkValidate').html('')
+                $('#landMark').css('border-color', '')
+            }
+        } else {
+            const addAddress = document.getElementById("addNewAddress");
+            var formData = new FormData(addAddress);
+            let data = Object.fromEntries(formData);
+            console.log($('#addNewAddress').serialize());
+            $.ajax({
+                url: '/addAddress',
+                method: 'post',
+                dataType: 'json',
+                encode: true,
+                data: $('#addNewAddress').serialize(),
+            }).done((data) => {
+                if (data.success) {
+                    console.log(data);
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your address has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    window.location.reload();
+
+                } else {
+                    console.log("ERROR! data didn't saved")
+                }
+            })
+        }
+        event.preventDefault()
+    })
+
+    /* to edit a address */
+    function editAddress(addressId) {
+        const editAddress = document.getElementById("editedForm" + addressId);
+        var formData = new FormData(editAddress);
+        let data = Object.fromEntries(formData);
+        /* console.log($("#editedForm" + addressId).serialize()); */
+        $.ajax({
+            url: "/editAddress",
+            method: "post",
+            dataType: "json",
+            encode: true,
+            data: { data: data, addressId: addressId }
+        }).done((data) => {
+            console.log(data)
+        });
+    }
+</script>

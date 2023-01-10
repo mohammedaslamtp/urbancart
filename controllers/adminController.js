@@ -6,11 +6,12 @@ const customers = require("../models/userDataBase");
 const products = require("../models/productDataBase");
 const coupons = require("../models/couponsDataBase");
 
+
 module.exports = {
   /* admin home page */
   admin: (req, res) => {
     if (req.session.admin) {
-      res.render("admin/index", { user: false, admin: true, dashBoard:true});
+      res.render("admin/index", { user: false, admin: true, page:"dashboard"});
     } else {
       res.redirect("/admin/adminLogIn");
     }
@@ -51,11 +52,12 @@ module.exports = {
 
   /* category management page*/
   category: async (req, res) => {
-    let showCategory = await category.find();
+    let showCategory = await category.find({ access: true });
+    console.log('categories : '+showCategory)
     res.render("admin/categoryList", {
       user: false,
       admin: true,
-      isCategory: true,
+      page: "category",
       showCategory
     });
   },
@@ -84,7 +86,7 @@ module.exports = {
   /* customers management page*/
   customers: async (req, res) => {
     let showUsers = await customers.find();
-    res.render("admin/customers", { admin: true, user: false, showUsers });
+    res.render("admin/customers", { admin: true, user: false, showUsers, page:"customers" });
   },
 
   /* to block a user */
@@ -104,14 +106,15 @@ module.exports = {
   },
 
   /* products management page */
-  products: async (req, res) => {
-    let showProducts = await products.find();
+  products: async (req, res) => { 
+    let showProducts = await products.find({access:true}).populate('category');
     let showCategory = await category.find();
     res.render("admin/products", {
       admin: true,
       user: false,
       showProducts,
-      showCategory
+      showCategory,
+      page:"products"
     });
   },
 
@@ -136,7 +139,7 @@ module.exports = {
   /* to view coupons */
   coupons: async (req, res) => {
     let showCoupons = await coupons.find();
-    res.render("admin/coupons", { user: false, admin: true, showCoupons });
+    res.render("admin/coupons", { user: false, admin: true, showCoupons, page:"coupons" });
   },
 
   /* to add a new coupon */

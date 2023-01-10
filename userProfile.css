@@ -1,0 +1,31 @@
+*,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-style: sans-serif;
+}
+
+.toggle-button {
+  border: none;
+  background: none;
+  margin: 1em;
+}
+
+.costum-border {
+  border-right: solid 1px lightgray;
+}
+
+.costum-border li {
+  display: flex;
+  align-items: center;
+  height: 4.2em;
+}
+
+.costum-border li:hover {
+  background-color: beige;
+  transition: all 0.3s ease-in;
+  border-radius: 10px;
+}

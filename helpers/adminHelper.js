@@ -80,7 +80,7 @@ module.exports = {
   /* to delete a category */
   delCategory: (categoryId) => {
     return new Promise((resolve, reject) => {
-      category.findByIdAndRemove({ _id: objId(categoryId) }).then((response) => {
+      category.findByIdAndUpdate({ _id: objId(categoryId) },{access:false}).then((response) => {
         resolve(response);
       });
     });
@@ -181,7 +181,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       const productId = req.params.id;
       console.log(productId);
-      product.findByIdAndRemove(productId).then((response) => {
+      product.findByIdAndUpdate({_id:productId},{access:false}).then((response) => {
         console.log(response);
         res.redirect("/admin/products");
       });

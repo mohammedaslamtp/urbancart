@@ -1,64 +1,112 @@
-<!--header section start -->
-<header class="header-section bg-warning d-flex align-items-center" style="height: 6em;">
-  <div class="container-fluid bg-warning align-items-center">
-    <div class="row">
-      <div class="col-sm-12 col-lg-3 d-flex align-items-center">
-        <div class="logo"><img src="images/logo.png" /></div>
-      </div>
-      <div class="col-sm-4 col-lg-5">
-        <div class="menu-area">
-          <nav class="navbar navbar-expand-lg">
-            <!-- <a class="navbar-brand" href="#">Menu</a> -->
-            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
-              data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-              aria-label="Toggle navigation">
-              <i class="fa fa-bars"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto align-items-center">
-                <li class="nav-item active">
-                  <a class="nav-link active" href="#">Home<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Orders</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="about.html">About</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="company.html">Company</a>
-                </li>
-                <li class="#" href="#">
-                  <a class="nav-link" href="furnitures.html">Furnitures</a>
-                </li>
+<!-- linking costum css category dropdown -->
+<link rel="stylesheet" href="/css/userCategoryDropdown.css" type="text/css">
+<!-- linking end here -->
 
-              </ul>
-            </div>
-          </nav>
-        </div>
-      </div>
-      <div class="col-sm-8 col-lg-4 d-flex align-items-center">
-        <div class="togle_3">
+<!-- top-area Start -->
+<div class="top-area">
+  <div class="header-area">
+    <!-- Start Navigation -->
+    <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy" data-minus-value-desktop="70"
+      data-minus-value-mobile="55" data-speed="1000">
 
-
-          <div class="left_main">
-            <div class="menu_main">
-              <% if (users) { %>
-                <a href="/userLogOut"><i class="fa fa-fw fa-user"></i> logout </a>
-                <%} else { %>
-                  <a href="/login"><i class="fa fa-fw fa-user"></i> Login </a>
-                  <% } %>
-            </div>
+      <!-- Start Top Search -->
+      <div class="top-search">
+        <div class="container">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input type="text" class="form-control" placeholder="Search">
+            <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
           </div>
         </div>
-        <div class="middle_main">
-          <div class="shoping_bag"><img src="images/search-icon.png" /></div>
-        </div>
-        <div class="right_main">
-          <div class="togle_main"><img src="images/shopping-bag.png" /></div>
-        </div>
       </div>
-    </div>
-  </div>
-  </div>
-</header>
+      <!-- End Top Search -->
+
+      <div class="container">
+        <!-- Start Atribute Navigation -->
+        <div class="attr-nav">
+          <ul>
+            <li class="search">
+              <a href="#"><span class="lnr lnr-magnifier"></span></a>
+            </li><!--/.search-->
+            <li class="nav-setting dropdown">
+              <a href="#"><i class="bi bi-person dropdown-toggle" data-bs-toggle="dropdown"
+                  aria-expanded="false"></i></a>
+              <ul class="dropdown-menu">
+                <% if (users) { %>
+                  <li><a class="dropdown-item" href="/userProfile">Profile</a></li>
+                  <li><a class="dropdown-item" href="/wishlist">Wishlist</a></li>
+                  <li><a class="dropdown-item" href="/userLogOut">Logout</a></li>
+                  <%} else { %>
+                    <li><a class="dropdown-item" href="/login">Login</a></li>
+                    <% } %>
+              </ul>
+            </li><!--/.search-->
+
+            <li class="dropdown <% if(page==" cart"){ %>active <% } %>">
+                <a href="/userCart" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="bi bi-cart2"></i>
+                  <% if (users) { %>
+                    <span class="badge badge-bg-1" id="cart-count">
+                      <%= users.cart.items.length %>
+                    </span>
+                    <% } %>
+                </a>
+            </li>
+          </ul>
+        </div><!--/.attr-nav-->
+        <!-- End Atribute Navigation -->
+
+        <!-- Start Header Navigation -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+            <i class="fa fa-bars"></i>
+          </button>
+          <!-- <a class="navbar-brand" href="/">URBANCART</a> -->
+
+        </div><!--/.navbar-header-->
+        <!-- End Header Navigation -->
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+          <ul class="nav navbar-nav navbar-center" data-in="fadeInDown" data-out="fadeOutUp">
+            <li class=" nav-item <% if(page==" home"){ %>active <% } %>"><a href="/">Home</a></li>
+            <li class="nav-item <% if(page==" furnitures"){ %>active <% } %>"><a href="/products">Furnitures</a></li>
+            <li class="nav-item <% if(page==" orders"){ %>active <% } %>"><a href="">Orders</a></li>
+
+            <li class="nav-item">
+              <div class="dropdown text-dark">
+                <a class="dropbtn">Category</a>
+                <div class="dropdown-content">
+                  <a href="/products">
+                    All Products
+                  </a>
+                  <% showCategory.forEach((el)=>{ %>
+                    <a class="dropdown-item" href="/products?category=<%= el._id %>">
+                      <%=el.category %>
+                    </a>
+                    <% }) %>
+                </div>
+              </div>
+            </li>
+          </ul><!--/.nav -->
+
+          <!-- style for li to center -->
+          <style>
+            .nav li {
+              width: 100;
+              height: 100;
+              display: flex;
+              align-items: center;
+            }
+          </style>
+
+
+        </div><!-- /.navbar-collapse -->
+      </div><!--/.container-->
+    </nav><!--/nav-->
+    <!-- End Navigation -->
+  </div><!--/.header-area-->
+  <div class="clearfix"></div>
+
+</div><!-- /.top-area-->
+<!-- top-area End -->

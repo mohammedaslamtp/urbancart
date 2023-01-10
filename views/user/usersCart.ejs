@@ -1,0 +1,152 @@
+<!-- cart new -->
+<section class="h-100 w-100 h-custom" style="margin-top:5em;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+                <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                    <div class="card-body p-0">
+                        <div class="row g-0">
+                            <div class="col-lg-8">
+                                <% if(cartItems===null || cartItems.items.length==0){ %>
+                                    <div class="d-flex justify-content-around align-items-center mb-5"
+                                        style="margin-top: 2em;flex-wrap: wrap;">
+                                        <h1 class="fw-bold mb-0 text-black">Cart is Empty</h1>
+                                    </div>
+                                    <% }else{ %>
+                                        <div class="d-flex justify-content-around align-items-center mb-5"
+                                            style="margin-top: 2em;flex-wrap: wrap;">
+                                            <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                                            <h6 class="mb-0 text-muted" id="items">
+                                                <%= cartItems.items.length %> items
+                                            </h6>
+                                        </div>
+                                        <div class="p-5" style="height: 80vh; overflow-y: scroll;">
+                                            <% for(let i=0; i<cartItems.items.length;i++){ let
+                                                eachItem=cartItems.items[i]%>
+                                                <div id="mainDiv<%= eachItem.productId._id%>"
+                                                    class="row mb-4 d-flex justify-content-between align-items-center">
+                                                    <hr class="my-4">
+                                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                                        <img src="<%= eachItem.productId.images[0] %>"
+                                                            class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                                    </div>
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <!--   <h6 class="text-muted">
+                                                             < %= eachItem.productId.category % >
+                                                            category
+                                                        </h6> -->
+                                                        <h6 class="text-black mb-0">
+                                                            <%= eachItem.productId.tittle %>
+                                                        </h6>
+                                                    </div>
+
+                                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                                        <button type="submit" class="btn btn-link px-2"
+                                                            onclick="changeQuantity('<%= eachItem.productId._id%>','-1')">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
+                                                        <input id="<%= eachItem.productId._id %>" min="0"
+                                                            name="quantity" value="<%= eachItem.qty%>" type="text"
+                                                            max="<%= eachItem.productId.stock %>"
+                                                            class="form-control form-control-sm" style="width:4em;" />
+
+                                                        <button class="btn btn-link px-2"
+                                                            onclick="changeQuantity('<%= eachItem.productId._id%>','1')">
+                                                            <i class="fas fa-plus"></i>
+                                                        </button>
+
+                                                    </div>
+                                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                        <h6 class="mb-0">$ <%= eachItem.productId.price %>
+                                                        </h6>
+                                                    </div>
+                                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                        <button
+                                                            onclick="removeCartItem('<%= eachItem.productId._id%>','-2')"
+                                                            class="text-muted"><i class="fas fa-times"></i></button>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                        <% } %>
+                            </div>
+                            <div class="col-lg-4 bg-grey">
+                                <div class="p-5">
+                                    <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                                    <hr class="my-4">
+
+                                    <!-- <div class="d-flex justify-content-between mb-4">
+                                        <h5 class="text-uppercase">items 3</h5>
+                                    </div> -->
+
+                                    <h5 class="text-uppercase mb-3">Shipping</h5>
+
+                                    <div class="mb-4 pb-2">
+                                        <select class="select">
+                                            <option value="1">Standard-Delivery- €5.00</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                            <option value="4">Four</option>
+                                        </select>
+                                    </div>
+
+                                    <h5 class="text-uppercase mb-3">Give code</h5>
+
+                                    <div class="mb-5">
+                                        <div class="form-outline">
+                                            <input type="text" id="form3Examplea2"
+                                                class="form-control form-control-lg" />
+                                            <label class="form-label" for="form3Examplea2">Enter your code</label>
+                                        </div>
+                                    </div>
+
+                                    <hr class="my-4">
+
+                                    <div class="d-flex justify-content-between mb-5">
+                                        <h5 class="text-uppercase">Total price</h5>
+                                        <% if(cartItems){ %>
+                                            <h5>$ <span id="total-price">
+                                                    <%= cartItems.totalPrice %>
+                                                </span> </h5>
+                                            <% } %>
+                                    </div>
+
+                                    <button type="button" class="btn btn-dark btn-block btn-lg"
+                                        data-mdb-ripple-color="dark">Register</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    function removeCartItem(id, count) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "Do you want to remove the procuct!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'delete',
+            cancelButtonText: 'cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                changeQuantity(id, count)
+            }
+        })
+    }
+
+</script>

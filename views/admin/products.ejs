@@ -36,7 +36,8 @@
                                                     <select class="form-select" aria-label="Default select example"
                                                         name="category">
                                                         <% showCategory.forEach((element)=>{ %>
-                                                            <option class="form-control" type="text">
+                                                            <option value="<%= element._id %>" class="form-control"
+                                                                type="text">
                                                                 <%= element.category %>
                                                             </option>
                                                             <% }) %>
@@ -118,7 +119,7 @@
                                                 <%= el.tittle %>
                                             </td>
                                             <td>
-                                                <%= el.category %>
+                                                <%= el.category.category %>
                                             </td>
                                             <td>
                                                 <%= el.price %>
@@ -177,10 +178,11 @@
                                                                             name="category" type="text" id="category"
                                                                             aria-label="Default select example">
                                                                             <% showCategory.forEach((element)=>{ %>
-                                                                                <option <%
-                                                                                    if(element.category==el.category){%>
-                                                                                    selected <%} %> > <%=
-                                                                                            element.category %>
+                                                                                <option value="<%= element._id %>" <%
+                                                                                    if(element.category==el.category.category){%>
+                                                                                    selected value="<%= el.category._id
+                                                                                        %>" <%} %> > <%=
+                                                                                                element.category %>
                                                                                 </option>
                                                                                 <% }) %>
                                                                         </select>
@@ -212,7 +214,7 @@
                                                                             class="col-form-label">Image</label>
                                                                         <input name="images" type="file"
                                                                             class="form-control" id="image"
-                                                                            value="<%= el.images %> " accept="image/*"
+                                                                            value="<%= el.images %>" accept="image/*"
                                                                             multiple>
                                                                     </div>
                                                                     <div class="form-group">

@@ -9,11 +9,12 @@ const productSchema = new mongoose.Schema(
     },
     tittle: {
       type: String,
+      index:true,
       requried: true
     },
     category: {
-      type: String,
-      ref:'category',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "category",
       requried: true
     },
     price: {
@@ -22,7 +23,7 @@ const productSchema = new mongoose.Schema(
     },
     discount: {
       type: String,
-      required:true
+      required: true
     },
     discription: {
       type: String,
@@ -35,6 +36,10 @@ const productSchema = new mongoose.Schema(
     images: {
       type: Object,
       requried: true
+    },
+    access: {
+      type: Boolean,
+      default:true
     }
   },
   { timestamps: true }

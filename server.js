@@ -7,6 +7,8 @@ const app = express();
 const expressLayouts = require("express-ejs-layouts");
 const mongoose = require("mongoose");
 const session = require("express-session");
+
+
 /* const nocache = require("nocache"); */
 
 //cache clearing...
@@ -20,6 +22,7 @@ app.use(function (req, res, next) {
 const userRouter = require("./routes/user");
 const adminRouter = require("./routes/admin");
 
+app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("layout", "layouts/layout");
@@ -45,7 +48,7 @@ app.use(
     secret: "keyboard cat",
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: 1000000 }
+    cookie: { maxAge: 10000000 }
   })
 );
 

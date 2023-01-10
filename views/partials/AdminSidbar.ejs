@@ -17,11 +17,16 @@
             </div>
         </div>
         <div class="navbar-nav w-100">
-            <a href="/admin" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-            <a href="/admin/category" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Category</a>
-            <a href="/admin/customers" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Customers</a>
-            <a href="/admin/products" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Products</a>
-            <a href="/admin/coupons" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Coupons</a>
+            <a href="/admin" class="nav-item nav-link <% if(page==" dashboard"){ %>active <% } %>"><i
+                        class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+            <a href="/admin/category" class="nav-item nav-link <% if(page==" category"){ %>active <% } %>"><i
+                        class="fa fa-th me-2"></i>Category</a>
+            <a href="/admin/customers" class="nav-item nav-link <% if(page==" customers"){ %>active <% } %>"><i
+                        class="fa fa-keyboard me-2"></i>Customers</a>
+            <a href="/admin/products" class="nav-item nav-link <% if(page==" products"){ %>active <% } %>"><i
+                        class="fa fa-table me-2"></i>Products</a>
+            <a href="/admin/coupons" class="nav-item nav-link <% if(page==" coupons"){ %>active <% } %>"><i
+                        class="fa fa-chart-bar me-2"></i>Coupons</a>
 
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
@@ -81,7 +86,8 @@
                 <hr class="dropdown-divider">
                 <a href="#" class="dropdown-item">
                     <div class="d-flex align-items-center">
-                        <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                        <img class="rounded-circle" src="img/user.jpg" alt=""
+                            style="width: 40px; height: 40px;">
                         <div class="ms-2">
                             <h6 class="fw-normal mb-0">Jhon send you a message</h6>
                             <small>15 minutes ago</small>
@@ -91,7 +97,7 @@
                 <hr class="dropdown-divider">
                 <a href="#" class="dropdown-item">
                     <div class="d-flex align-items-center">
-                        <img class="rounded-circle" src="/public/img/user.jpg" alt=""
+                        <img class="rounded-circle" src="img/user.jpg" alt=""
                             style="width: 40px; height: 40px;">
                         <div class="ms-2">
                             <h6 class="fw-normal mb-0">Jhon send you a message</h6>
