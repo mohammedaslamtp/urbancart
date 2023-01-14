@@ -89,7 +89,7 @@ const userSchema = new mongoose.Schema(
           type: String,
           required: true
         },
-        default: {
+        defualt: {
           type: Boolean,
           default: false
         },

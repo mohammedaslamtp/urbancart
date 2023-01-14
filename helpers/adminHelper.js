@@ -4,6 +4,7 @@ const customers = require("../models/userDataBase");
 const product = require("../models/productDataBase");
 const objId = require("mongoose").Types.ObjectId;
 const coupon = require("../models/couponsDataBase");
+const Orders = require("../models/orders");
 
 module.exports = {
   /* to check is admin or not when login */
@@ -80,9 +81,11 @@ module.exports = {
   /* to delete a category */
   delCategory: (categoryId) => {
     return new Promise((resolve, reject) => {
-      category.findByIdAndUpdate({ _id: objId(categoryId) },{access:false}).then((response) => {
-        resolve(response);
-      });
+      category
+        .findByIdAndUpdate({ _id: objId(categoryId) }, { access: false })
+        .then((response) => {
+          resolve(response);
+        });
     });
   },
 
@@ -144,7 +147,6 @@ module.exports = {
     let newData = req.body;
     let files = req.files;
     let productId = req.params.id;
-
     if (files.length > 0) {
       var imagePaths = {};
       for (let i = 0; i < files.length; i++) {
@@ -181,7 +183,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       const productId = req.params.id;
       console.log(productId);
-      product.findByIdAndUpdate({_id:productId},{access:false}).then((response) => {
+      product.findByIdAndUpdate({ _id: productId }, { access: false }).then((response) => {
         console.log(response);
         res.redirect("/admin/products");
       });
@@ -192,10 +194,10 @@ module.exports = {
   addCoupon: (req, res) => {
     let inputData = req.body;
     let newCoupon = new coupon({
-      name: inputData.name,
+      name: inputData.name.trim(),
       discription: inputData.discription,
       discount: inputData.discount,
-      maxUsage: inputData.maxUsage,
+      minCartAmount: inputData.minCartAmount,
       startDate: inputData.startDate,
       expiry: inputData.expiry
     });
@@ -229,6 +231,7 @@ module.exports = {
   editCoupon: (req, res) => {
     let couponId = req.params.id;
     let data = req.body;
+
     coupon
       .findByIdAndUpdate(
         { _id: couponId },
@@ -237,7 +240,7 @@ module.exports = {
             name: data.name,
             discription: data.discription,
             discount: data.discount,
-            maxUsage: data.maxUsage,
+            minCartAmount: data.minCartAmount,
             startDate: data.startDate,
             expiry: data.expiry
           }
@@ -246,5 +249,26 @@ module.exports = {
       .then(() => {
         res.redirect("/admin/coupons");
       });
+  },
+
+  // to show the ordered products in orders:
+  getOrderedProducts:async (req, res) => {
+    let orderId = req.body.orderId;
+    let orders = await Orders.find().populate("user").populate("cart.productId");
+    console.log("orders: ", orders);
+  },
+
+  // to orders management:
+  orders: async (req, res) => {
+    let orders = await Orders.find().populate("user").populate("cart.productId");
+    res.render("admin/orders", { admin: true, orders, user: false, page: "orders" });
+     console.log("orders: ", orders);
+     console.log("cart: ", orders[0].cart);
+    console.log("product tittle: ", orders[0].cart[0].productId.tittle);
+    let userAddr;
+    
+    console.log('useraddr:'+userAddr);
+   /*  console.log("user id: ", orders[0].address);
+    console.log("user: ", orders[0].user.addresses); */
   }
 };

@@ -126,8 +126,6 @@
 <main class="container">
 
     <!-- sidebar start -->
-    <!--  <button class="toggle-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
-        aria-controls="offcanvasWithBothOptions"><i class="fa-solid fa-bars text-dark"></i></button> -->
     <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
         aria-labelledby="offcanvasWithBothOptionsLabel">
         <div class="offcanvas-header ms-auto">
@@ -142,8 +140,8 @@
                         href="/userAddress"><b>Address</b></a>
                 </li>
                 <li class="list-group-item"><a class="text-decoration-none text-dark" href="">Oders</a></li>
-                <li class="list-group-item"><a class="text-decoration-none text-dark" href="">Whishlist</a></li>
-                <li class="list-group-item "><a class="text-decoration-none text-danger" href="">Logout</a></li>
+                <li class="list-group-item"><a class="text-decoration-none text-dark" href="/wishlist">Whishlist</a></li>
+                <li class="list-group-item "><a class="text-decoration-none text-danger" href="/userLogOut">Logout</a></li>
             </ul>
         </div>
     </div>
@@ -152,42 +150,44 @@
     <!-- Address card 1 -->
 
     <section class="row justify-content-center" style="margin-top: 10em;">
-        <% for(let i=0;i<users.addresses.length;i++){ let address=users.addresses[i]%>
-            <div class="col-9 col-sm-8 col-md-8 col-lg-8 mt-5">
-                <div class="card ">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <h5 class="card-title">Address <%= i+1%>
-                            </h5>
-                            <button onclick="deleteAddress('<%= address._id %>')">
-                                <i class="bi bi-trash text-danger" style="font-size: 1.3em;"></i>
-                            </button>
-                        </div>
-                        <p class="card-text w-75">
-                            <%= address.fullName %>, <%= address.city %>, <%= address.landMark %>, <br>
-                                        <%= address.pincode %>, <%= address.district %>, <%= address.state %>,
-                                                    <%= address.country %>
-                        </p>
-                        <div class="d-flex justify-content-between">
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#address<%= address._id %>" data-whatever="@mdo">
-                                Edit Address</button>
+        <% addresses.forEach((addr,index)=>{%>
+            <% let address=addr.addresses %>
+                <div class="col-9 col-sm-8 col-md-8 col-lg-8 mt-5">
+                    <div class="card ">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">Address <%= index+1 %>
+                                </h5>
+                                <button onclick="deleteAddress('<%= address._id %>')">
+                                    <i class="bi bi-trash text-danger" style="font-size: 1.3em;"></i>
+                                </button>
+                            </div>
+                            <p class="card-text w-75">
+                                <%= address.fullName %>, <%= address.city %>, <%= address.landMark %>, <br>
+                                            <%= address.pincode %>, <%= address.district %>, <%= address.state %>,
+                                                        <%= address.country %>
+                            </p>
+                            <div class="d-flex justify-content-between">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#address<%= address._id %>" data-whatever="@mdo">
+                                    Edit Address</button>
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="address<%= address._id %>" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Edit Address</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form id='editedForm<%= address._id %>'>
-                                                <form>
+                                <!-- Modal -->
+                                <div class="modal fade" id="address<%= address._id %>" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Edit Address</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id='editedForm<%= address._id %>'>
+
                                                     <div class="form-group col-md-12 col-12">
                                                         <label for="recipient-name" class="col-form-label">Full
                                                             Name</label>
@@ -232,22 +232,24 @@
                                                             id="editCountry" value="<%= address.country %>">
                                                     </div>
                                                     <div class="w-100 d-flex justify-content-center">
-                                                        <button type="submit" onclick="editAddress('<%= address._id%>')"
+                                                        <button type="button"
                                                             class="btn btn-primary">Save changes</button>
                                                     </div>
                                                 </form>
-                                            </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <a href="#" style="text-decoration: none;" class="text-warning">Defualt</a>
+                                <!-- < % if(address.defualt){ %>
+                                    <button class="text-warning">Defualt</button>
+                                    < % }else{ %>
+                                        <button type="button" onclick="setAsDefualt('< %= address._id%>')" >Set as defualt</button>
+                                        < % } %> -->x
+                            </div> 
                         </div>
                     </div>
                 </div>
-            </div>
-            <% } %>
+                <% }) %>
     </section>
 
     <% if(users.addresses.length==0){ %>
@@ -433,8 +435,9 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    window.location.reload();
-
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500)
                 } else {
                     console.log("ERROR! data didn't saved")
                 }
@@ -443,20 +446,20 @@
         event.preventDefault()
     })
 
-    /* to edit a address */
-    function editAddress(addressId) {
-        const editAddress = document.getElementById("editedForm" + addressId);
-        var formData = new FormData(editAddress);
-        let data = Object.fromEntries(formData);
-        /* console.log($("#editedForm" + addressId).serialize()); */
-        $.ajax({
-            url: "/editAddress",
-            method: "post",
-            dataType: "json",
-            encode: true,
-            data: { data: data, addressId: addressId }
-        }).done((data) => {
-            console.log(data)
-        });
-    }
+    /* function setAsDefualt(addressId) {
+        fetch('/setAsDefualtAddress', {
+            method: 'post',
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify({ addressId: addressId })
+        }).then((data)=>{
+            return data.json()
+        }).then((data)=>{
+            if(data.others==false){
+                console.log('DONE..')
+            }
+        })
+    } */
+
 </script>

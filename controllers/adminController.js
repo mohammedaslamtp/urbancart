@@ -11,7 +11,7 @@ module.exports = {
   /* admin home page */
   admin: (req, res) => {
     if (req.session.admin) {
-      res.render("admin/index", { user: false, admin: true, page:"dashboard"});
+      res.render("admin/index", { user: false, admin: true, page: "dashboard" });
     } else {
       res.redirect("/admin/adminLogIn");
     }
@@ -25,7 +25,6 @@ module.exports = {
       res.render("admin/login", { admin: false, user: false, loginErr });
       req.session.loggErr = null;
       loginErr = null;
-
     }
   },
   /* admin login submition case (examin data) */
@@ -53,7 +52,7 @@ module.exports = {
   /* category management page*/
   category: async (req, res) => {
     let showCategory = await category.find({ access: true });
-    console.log('categories : '+showCategory)
+    console.log("categories : " + showCategory);
     res.render("admin/categoryList", {
       user: false,
       admin: true,
@@ -86,7 +85,7 @@ module.exports = {
   /* customers management page*/
   customers: async (req, res) => {
     let showUsers = await customers.find();
-    res.render("admin/customers", { admin: true, user: false, showUsers, page:"customers" });
+    res.render("admin/customers", { admin: true, user: false, showUsers, page: "customers" });
   },
 
   /* to block a user */
@@ -106,15 +105,15 @@ module.exports = {
   },
 
   /* products management page */
-  products: async (req, res) => { 
-    let showProducts = await products.find({access:true}).populate('category');
+  products: async (req, res) => {
+    let showProducts = await products.find({ access: true }).populate("category");
     let showCategory = await category.find();
     res.render("admin/products", {
       admin: true,
       user: false,
       showProducts,
       showCategory,
-      page:"products"
+      page: "products"
     });
   },
 
@@ -139,7 +138,7 @@ module.exports = {
   /* to view coupons */
   coupons: async (req, res) => {
     let showCoupons = await coupons.find();
-    res.render("admin/coupons", { user: false, admin: true, showCoupons, page:"coupons" });
+    res.render("admin/coupons", { user: false, admin: true, showCoupons, page: "coupons" });
   },
 
   /* to add a new coupon */
@@ -160,5 +159,16 @@ module.exports = {
   /* edit coupon */
   editCoupon: (req, res) => {
     adminHelper.editCoupon(req, res);
+  },
+
+  // to orders management:
+  orders: (req, res) => {
+    adminHelper.orders(req, res);
+  },
+
+  // to show the ordered products in orders:
+  getOrderedProducts: (req, res) => {
+    console.log('this is working..')
+    adminHelper.getOrderedProducts(req, res);
   }
 };

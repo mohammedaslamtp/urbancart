@@ -1,38 +1,38 @@
-<section style="background-color: #508bfc; height: 140vh;">
+<section style="background-color: #508bfc; height: 110vh;">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                 <div class="card shadow-2-strong" style="border-radius: 1rem;">
                     <form class="card-body px-5 pt-3 text-center" method="post" action="/userSignUp" id="signupForm">
 
-                        <h2 class="mb-2 mt-3 text-warning">URBANCART</h2>
-                        <h3 class="mb-2 mt-3">Sign up</h3>
+                        <h2 class="mb-2 my-5 text-warning">URBANCART</h2>
+                        <h3 class="mb-2 my-3">Sign up</h3>
 
                         <div class="form-outline mb-3">
-                            <input name="fullName" type="text" id="name" class="form-control form-control-lg" />
-                            <label class="form-label" id="name" for="typeEmailX-2">Full Name</label>
+                            <input name="fullName" type="text" id="name" class="form-control form-control-lg" style="height: 3.5em;"/>
+                            <label class="form-label my-3" id="name" for="typeEmailX-2">Full Name</label>
                             <h5 id="usercheck" style="color: red;">
                                 **Username is missing
                             </h5>
                         </div>
 
                         <div class="form-outline mb-3">
-                            <input name="email" type="email" id="typeEmailX-2" class="form-control form-control-lg" />
-                            <label class="form-label" id="email" for="typeEmailX-2">Email</label><small id="emailvalid"
+                            <input name="email" type="email" id="typeEmailX-2" class="form-control form-control-lg" style="height: 3.5em;"/>
+                            <label class="form-label my-3" id="email" for="typeEmailX-2">Email</label><small id="emailvalid"
                                 class="form-text text-muted invalid-feedback">
                                 Your email must be a valid email
                             </small>
                         </div>
 
                         <div class="form-outline mb-3">
-                            <input name="phone" type="tel" id="phone" class="form-control form-control-lg" />
-                            <label class="form-label" id="phone" for="phone">Phone</label>
+                            <input name="phone" type="tel" id="phone" class="form-control form-control-lg" style="height: 3.5em;"/>
+                            <label class="form-label my-3" id="phone" for="phone">Phone</label>
                         </div>
 
                         <div class="form-outline mb-3">
                             <input name="nPassword" type="password" id="typePasswordX-2"
-                                class="form-control form-control-lg" />
-                            <label class="form-label" id="password" for="typePasswordX-2">New Password</label>
+                                class="form-control form-control-lg" style="height: 3.5em;"/>
+                            <label class="form-label my-3" id="password" for="typePasswordX-2">New Password</label>
                             <h5 id="passcheck" style="color: red;">
                                 **Please Fill the password
                             </h5>
@@ -40,8 +40,8 @@
 
                         <div class="form-outline mb-3">
                             <input name="cPassword" type="password" id="typePasswordX-2"
-                                class="form-control form-control-lg" />
-                            <label class="form-label" id="confirmPassword" for="typePasswordX-2">Confirm
+                                class="form-control form-control-lg" style="height: 3.5em;"/>
+                            <label class="form-label my-3" id="confirmPassword" for="typePasswordX-2">Confirm
                                 Password</label>
                             <h5 id="conpasscheck" style="color: red;">
                                 **Password didn't match
@@ -50,7 +50,7 @@
 
                         <button class="btn btn-primary btn-lg btn-block" type="submit" id="submitbtn">Sign up</button>
 
-                        <p><a href="/login">Already have an account</a></p>
+                        <p class="mt-4"><a href="/login">Already have an account</a></p>
 
                     </form>
                 </div>
@@ -58,6 +58,7 @@
         </div>
     </div>
 </section>
+
 <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
     crossorigin="anonymous"></script>
 

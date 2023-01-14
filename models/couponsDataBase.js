@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 
 const couponsSchema = new mongoose.Schema(
   {
+    usedUsers: [
+      {
+        userId: {
+          type: mongoose.Types.ObjectId,
+          ref: "user"
+        }
+      }
+    ],
     name: {
       type: String,
       required: true,
@@ -15,7 +23,7 @@ const couponsSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    maxUsage: {
+    minCartAmount: {
       type: Number,
       required: true
     },

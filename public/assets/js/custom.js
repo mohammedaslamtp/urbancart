@@ -104,20 +104,6 @@ $(document).ready(function () {
   });
 });
 
-/* sweetalert for add to cart */
-/* unction Toast() {
-  $("#addToCart").submit((e) => {
-    console.log('toast is working..')
-    e.preventDefault();
-  });
-  swal("Item Added to Cart", "You clicked the button!", "success").then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire("success");
-      $("#addToCart").submit();
-    }
-  });
-} */
-
 function popUp() {
   console.log("entered to popUp function");
   Swal.fire({
@@ -202,17 +188,63 @@ function changeQuantityMain(productId, count) {
         }
       }
     });
-
 }
 
+// to delete a user address
 function deleteAddress(addressId) {
-  $.ajax({
-    url: "/deleteAddress",
-    method: "post",
-    dataType: "json",
-    encode: true,
-    data: {addressId: addressId }
-  }).done((data) => {
-    console.log(data);
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to delete!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Delete"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: "/deleteAddress",
+        method: "post",
+        dataType: "json",
+        encode: true,
+        data: { addressId: addressId }
+      }).done((data) => {
+        console.log(data);
+      });
+      Swal.fire("Changed", "Your file has been updated.", "success");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    }
   });
 }
+
+// to edit user address
+function editAddress(addressId) {
+  Swal.fire({
+    title: "Do you want to save the changes?",
+    showCancelButton: true,
+    confirmButtonText: "Save"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const editAddress = document.getElementById("editedForm" + addressId);
+      var formData = new FormData(editAddress);
+      let data = Object.fromEntries(formData);
+      $.ajax({
+        url: "/editAddress",
+        method: "post",
+        dataType: "json",
+        encode: true,
+        data: { data: data, addressId: addressId }
+      }).done((data) => {
+        console.log(data);
+      });
+      Swal.fire("Changed", "Your file has been updated.", "success");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    }
+  });
+}
+
+// to collect coupon code and calculate:

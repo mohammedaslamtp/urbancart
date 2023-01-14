@@ -11,7 +11,7 @@ module.exports = {
   /* user home page */
   home: async (req, res) => {
     let users = req.session.user;
-    let showCategory = await category.find();
+    let showCategory = await category.find({ access: true });
 
     res.render("user/index", { users, user: true, admin: false, showCategory, page: "home" });
   },
@@ -64,7 +64,7 @@ module.exports = {
       const phone = req.body.phone;
       req.session.signup = req.body;
       const user = await customer.findOne({ email: email });
-      console.log("userSignUp working...");
+
       if (user) {
         req.session.loggedIn = true;
         res.redirect("/");
@@ -85,19 +85,12 @@ module.exports = {
   /* otp generation for create a account and store data into database */
   generateOtp: async (req, res) => {
     try {
-      /* console.log("generateOtp working...");
-      console.log("req.session.signup ===> " + req.session.signup); */
       let { fullName, email, phone, nPassword, cPassword } = req.session.signup;
       let otps = req.body.otps;
-      /* console.log("otps ===> " + otps); */
       await otp.verifyOtp(phone, otps).then(async (verification_check) => {
-        /*         console.log("before ===> " + verification_check.status); */
         if (verification_check.status == "approved") {
-          /* console.log("after ===> " + verification_check.status);
-          console.log("passwords ::====> " + nPassword, cPassword); */
           nPassword = await bcrypt.hash(nPassword, 10);
           cPassword = await bcrypt.hash(cPassword, 10);
-          /*    console.log("otp verifying"); */
           let newPerson = new customer({
             fullName: fullName,
             email: email,
@@ -245,17 +238,19 @@ module.exports = {
   userAddress: async (req, res) => {
     if (req.session.user) {
       let users = req.session.user;
-      let showCategory = await category.find({ access: true }); /* 
-    let address = await customer.findById(req.session.user._id); */
-      let user = await customer.findOne({ _id: req.session.user._id });
-      console.log("user ======== > : " + user);
-      let userAddr = user.address 
-      let addresses = await userAddr.find
+      let showCategory = await category.find({ access: true });
+      let addresses = await customer.aggregate([
+        { $match: { _id: req.session.user._id } },
+        { $project: { addresses: 1 } },
+        { $unwind: "$addresses" },
+        { $match: { "addresses.isDeleted": false } }
+      ]);
       res.render("user/userAddress", {
         user: false,
         admin: false,
         showCategory,
         users,
+        addresses,
         page: "user-profile"
       });
     } else {
@@ -302,5 +297,50 @@ module.exports = {
   //to delete user a address
   deleteAddress: (req, res) => {
     userHelpers.deleteAddress(req, res);
+  },
+
+  // to set as defualt address
+  /* setAsDefualtAddress: (req, res) => {
+    userHelpers.setAsDefualtAddress(req, res);
+  } */
+
+  // to checkout page:
+  checkout: async (req, res) => {
+    if (req.session.user) {
+      userHelpers.checkout(req, res);
+    } else {
+      res.redirect("/login");
+    }
+  },
+
+  // to genarate coupon:
+  couponGenerate: (req, res) => {
+    if (req.session.user) {
+      userHelpers.couponGenerate(req, res);
+    } else {
+      res.redirect("/login");
+    }
+  },
+
+  // to place a order:
+  placeOrder: (req, res) => {
+    if (req.session.user) {
+      userHelpers.placeOrder(req, res);
+    } else {
+      res.redirect("/login");
+    }
+  },
+
+  // order success showing:
+  orderSuccess: async (req, res) => {
+    let showCategory = await category.find({ access: true });
+    let users = req.session.user;
+    res.render("user/orderSuccess", {
+      user: true,
+      admin: false,
+      showCategory,
+      users,
+      page: "orderSuccess"
+    });
   }
 };

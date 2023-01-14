@@ -1,5 +1,4 @@
 const express = require("express");
-const userHelpers = require("../helpers/userHelpers");
 const router = express.Router();
 const {
   login,
@@ -24,7 +23,12 @@ const {
   changeUserPassword,
   addAddress,
   editAddress,
-  deleteAddress
+  deleteAddress,
+  checkout,
+  couponGenerate,
+  placeOrder,
+  orderSuccess
+  /*  setAsDefualtAddress */
 } = require("../controllers/userController");
 const userDataBase = require("../models/userDataBase");
 
@@ -57,4 +61,10 @@ router.post("/changeUserPassword", changeUserPassword);
 router.post('/addAddress',addAddress)
 router.post("/editAddress", editAddress);
 router.post("/deleteAddress", deleteAddress);
+router.get("/checkout", checkout);
+router.post("/couponGenerate", couponGenerate);
+router.post("/placeOrder", placeOrder);
+router.get("/orderSuccess", orderSuccess);
+
+// router.post("/setAsDefualtAddress", setAsDefualtAddress);
 module.exports = router;

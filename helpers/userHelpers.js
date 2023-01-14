@@ -3,7 +3,9 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userDataBase");
 const category = require("../models/categoryDataBase");
 const products = require("../models/productDataBase");
+const Coupon = require("../models/couponsDataBase");
 const { count } = require("../models/userDataBase");
+const Orders = require("../models/orders");
 const objId = require("mongoose").Types.ObjectId;
 
 module.exports = {
@@ -59,9 +61,6 @@ module.exports = {
       .then((user) => {
         let cartItems = user.cart;
         cartCount = cartItems.items.length;
-        console.log("cart items length : " + cartItems.items.length);
-        console.log("user data: " + user);
-        console.log("user cart items: " + user.cart);
         res.render("user/usersCart", {
           user: true,
           admin: false,
@@ -293,6 +292,7 @@ module.exports = {
 
   //to edit address
   editAddress: async (req, res) => {
+    console.log("edit address calling....");
     let addressId = req.body.addressId;
     let formData = req.body.data;
     let user = await User.updateOne(
@@ -335,5 +335,214 @@ module.exports = {
       .catch((e) => {
         console.log("address deletion failed!");
       });
+  },
+  checkout: async (req, res) => {
+    let showCategory = await category.find({ access: true });
+    let user = await User.findById(req.session.user._id);
+    /* let couponPrice = await coupon.findOne() */
+    let addresses = user.addresses;
+    let noneDeletedAddresses = [];
+    addresses.forEach((el, index) => {
+      if (el.isDeleted == false) {
+        noneDeletedAddresses.push(el);
+      }
+    });
+    user
+      .populate("cart.items.productId")
+      .execPopulate()
+      .then((user) => {
+        let cartItems = user.cart;
+        cartCount = cartItems.items.length;
+        res.render("user/checkout", {
+          users: req.session.user,
+          addresses: noneDeletedAddresses,
+          cartItems,
+          admin: false,
+          user: true,
+          showCategory,
+          page: "checkout"
+        });
+      });
+  },
+
+  // to genarate coupon:
+  couponGenerate: async (req, res) => {
+    console.log(req.body);
+
+    let userId = req.session.user._id;
+    let user = await User.findById(userId);
+    let totalPrice = parseInt(user.cart.totalPrice);
+    let response = {};
+
+    let coupon = await Coupon.findOne({ name: req.body.couponCode }, (err, doc) => {
+      if (err) {
+        console.log("finding error! ", err);
+      } else {
+        console.log("coupon :  ", doc);
+        if (doc) {
+          if (Date.now() >= doc.expiry) {
+            response.expiry = true;
+            console.log("coupon expired.. ", doc.expiry);
+          } else {
+            console.log("coupon not expired... ", doc.expiry);
+            console.log("doc has couopon....");
+            let isUsed = doc.usedUsers.findIndex((el) => {
+              return new String(el.userId).trim() == new String(userId).trim();
+            });
+            if (isUsed >= 0) {
+              console.log("isUsed exists");
+              response.used = true;
+              /* response.min = doc.minCartAmount; */
+            } else {
+              response.used = false;
+              console.log("user didn't used yet");
+              if (doc == null || doc == undefined) {
+                console.log("failed coupon not found..", doc);
+              } else {
+                console.log("success ", doc);
+                if (totalPrice >= doc.minCartAmount) {
+                  totalPrice = totalPrice - doc.discount;
+                  response.status = true;
+                  response.total = totalPrice;
+                  response.discount = doc.discount;
+                } else {
+                  response.status = false;
+                  response.total = totalPrice;
+                  response.min = doc.minCartAmount;
+                }
+                console.log("total price ", totalPrice);
+              }
+              response.total = totalPrice;
+              response.discount = doc.discount;
+            }
+          }
+        } else {
+          console.log("coupon not found");
+          response.error = true;
+          response.total = totalPrice;
+        }
+      }
+      res.json(response);
+    });
+    console.log("response: ", response);
+
+    // let couponId = coupon._id;
+    // console.log("coupon id: " + couponId);
+
+    /* Coupon.findOneAndUpdate(
+        { _id: couponId },
+        { $push: { usedUsers: id }, $set: { updated: Date.now() } },
+        { returnNewDocument: true }) */
+  },
+
+  // to place a order:
+  placeOrder: async (req, res) => {
+    try {
+      console.log("body ==> ", req.body);
+      console.log("data========>  ", req.body.data);
+      let newTotal = req.body.total;
+      let couponCode = req.body.couponCode;
+      console.log("user id: ", req.session.user._id);
+      let id = {
+        userId: req.session.user._id
+      };
+      console.log("id: ", id);
+      if (couponCode) {
+        let coupon = await Coupon.findOne({ name: req.body.couponCode });
+        let couponId = coupon._id;
+        console.log("coupon code: ", couponCode);
+        Coupon.findOneAndUpdate(
+          { _id: couponId },
+          { $push: { usedUsers: id }, $set: { updated: Date.now() } },
+          { returnNewDocument: true },
+          (err, data) => {
+            if (err) {
+              console.log("user data cant save into coupon database!! ", err);
+            } else {
+              console.log("userdata save in coupon databas successfully.. ", data);
+            }
+          }
+        );
+        console.log("after all operations-coupon: ", coupon);
+      }
+      let addressId = objId(req.body.data.address);
+      console.log("add id  " + addressId);
+      let paymentMethod = req.body.data.paymentMethod;
+      let userId = req.session.user._id;
+      let user = await User.findById(userId);
+      let newOrder = new Orders({
+        user: userId,
+        address: objId(addressId),
+        cart: user.cart.items,
+        nonDiscountedAmount:user.cart.totalPrice,
+        paymentMethod: paymentMethod,
+        paymentStatus: "pending",
+        orderStatus: "placed",
+        date: Date.now(),
+        total: newTotal
+      });
+      newOrder.save((err, doc) => {
+        if (err) {
+          console.log("order saving error!  ", err);
+        } else {
+          console.log("order saving success");
+          User.updateOne(
+            { _id: userId },
+            { $set: { cart: { items: [] }, totalPrice: 0 } },
+            (err, data) => {
+              if (err) {
+                console.log("removing failed! ", err);
+              } else {
+                console.log("removing cart items is succussful...");
+              }
+            }
+          );
+          res.json({ success: true });
+        }
+      });
+      console.log("new order placed :  ", newOrder);
+    } catch (e) {
+      console.log("order ERROR!  ", e);
+    }
   }
+
+  // to set as defualt address
+  /* setAsDefualtAddress: (req, res) => {
+    let addressId = req.body.addressId;
+    let user = req.session.user;
+    User.updateOne(
+      { _id: req.session.user._id, "addresses._id": addressId },
+      { $set: { "addresses.$.defualt": true } }
+    )
+      .then((data) => {
+        console.log(data);
+        console.log("address set as defualt");
+        res.json({others:false})
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log("address defulat failed!");
+      });
+    */
+  /* User.updateMany(
+       { _id: req.session.user._id },
+       { $set: { "addresses.$[defualt]": false } },
+       {
+         arrayFilters: [
+           {
+             "addresses._id": { $ne: addressId }
+           }
+         ],
+         multi: true
+       }
+     )
+       .then((data) => {
+         console.log(data);
+         console.log("addresses set to non defulat");
+         res.json({ others: false });
+       })
+       .catch((e) => {
+         console.log("addresses non defulat failed! " + e);
+       }); 
+  }*/
 };
