@@ -107,7 +107,7 @@ module.exports = {
   /* products management page */
   products: async (req, res) => {
     let showProducts = await products.find({ access: true }).populate("category");
-    let showCategory = await category.find();
+    let showCategory = await category.find({ access: true });
     res.render("admin/products", {
       admin: true,
       user: false,

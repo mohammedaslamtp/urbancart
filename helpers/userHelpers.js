@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const Razorpay = require("razorpay");
 const User = require("../models/userDataBase");
 const category = require("../models/categoryDataBase");
 const products = require("../models/productDataBase");
@@ -7,6 +8,11 @@ const Coupon = require("../models/couponsDataBase");
 const { count } = require("../models/userDataBase");
 const Orders = require("../models/orders");
 const objId = require("mongoose").Types.ObjectId;
+// razorpay instance:
+var instance = new Razorpay({
+  key_id: process.env.KEY_ID,
+  key_secret: process.env.SECRET_KEY
+});
 
 module.exports = {
   doLogin: (userData) => {
@@ -470,11 +476,12 @@ module.exports = {
       let paymentMethod = req.body.data.paymentMethod;
       let userId = req.session.user._id;
       let user = await User.findById(userId);
+      let response = {};
       let newOrder = new Orders({
         user: userId,
         address: objId(addressId),
         cart: user.cart.items,
-        nonDiscountedAmount:user.cart.totalPrice,
+        nonDiscountedAmount: user.cart.totalPrice,
         paymentMethod: paymentMethod,
         paymentStatus: "pending",
         orderStatus: "placed",
@@ -497,12 +504,73 @@ module.exports = {
               }
             }
           );
-          res.json({ success: true });
+          if (req.body.data.paymentMethod == "COD") {
+            response.codSuccess = true;
+            console.log("cod success...");
+            console.log(response);
+            res.json(response);
+          } else {
+            var options = {
+              amount: newTotal * 100, // amount in the smallest currency unit
+              currency: "INR",
+              receipt: "" + doc._id
+            };
+            instance.orders.create(options, function (err, order) {
+              if (err) {
+                console.log("razorpay order error! ", err);
+              } else {
+                console.log("This is the order: ", order);
+                response.razoorpay = true;
+                response.order = order;
+                console.log(response);
+                res.json(response);
+              }
+            });
+          }
         }
       });
       console.log("new order placed :  ", newOrder);
     } catch (e) {
       console.log("order ERROR!  ", e);
+    }
+  },
+
+  // to verify payment:
+  verifyPayment: async (req, res) => {
+    try {
+      console.log("payment data: ", req.body);
+      let details = req.body.payment;
+      let order = req.body.order;
+      // let orders = await Orders.find()
+      const crypto = require("crypto");
+      let hmac = crypto.createHmac("sha256", process.env.SECRET_KEY);
+      hmac.update(details.razorpay_order_id + "|" + details.razorpay_payment_id);
+      hmac = hmac.digest("hex");
+      if (hmac == details.razorpay_signature) {
+        console.log("payment success $$$$$$$$$ ");
+        Orders.updateOne(
+          { _id: order.receipt },
+          {
+            $set: {
+              paymentStatus: "placed"
+            }
+          },
+          function (err, doc) {
+            if (err) {
+              console.log("payment method updation failed! ");
+              console.log(err);
+            } else {
+              console.log("payment method updation succussful... ", doc);
+              res.json({ status: true });
+            }
+          }
+        );
+      } else {
+        console.log("payment failed!!!!!!!");
+        res.json({ status: false });
+      }
+    } catch (err) {
+      console.log("payment verification area ERROR!!! ", err);
     }
   }
 

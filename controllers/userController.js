@@ -342,5 +342,10 @@ module.exports = {
       users,
       page: "orderSuccess"
     });
+  },
+
+  // razoorpay payment verification:
+  verifyPayment: (req, res) => {
+    userHelpers.verifyPayment(req,res)
   }
 };

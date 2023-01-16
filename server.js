@@ -9,6 +9,10 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 
 
+
+
+
+
 /* const nocache = require("nocache"); */
 
 //cache clearing...
@@ -54,5 +58,11 @@ app.use(
 
 app.use("/", userRouter);
 app.use("/admin", adminRouter);
+
+// 404 error handling middleware:
+app.use((req, res, next) => {
+  res.status(404).send("Sorry, we couldn't find that!");
+});
+
 
 app.listen(process.env.PORT || 3000);

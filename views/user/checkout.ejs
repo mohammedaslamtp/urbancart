@@ -306,9 +306,6 @@
         const coupon = document.querySelector('#coupon-data');
         coupon.addEventListener('submit', event => {
             event.preventDefault()
-            /* const editForm = document.getElementById("coupon-data");
-            const formData = new FormData(editForm);
-            let dataToSend = Object.fromEntries(formData); */
             console.log($('#coupon-data').serialize());
             $.ajax({
                 url: '/couponGenerate',
@@ -320,7 +317,7 @@
                 if (data.expiry) {
                     $('#coupon-error').html('sorry...this coupon is expired!')
                 } else {
-                     $('#coupon-error').html('')
+                    $('#coupon-error').html('')
                     if (data.error == true) {
                         $('#coupon-error').html('coupon not found!')
                         $('#discount').html('00')
@@ -375,12 +372,71 @@
                             total: parseInt(total)
                         }
                     }).done((data) => {
-                        if (data.success) {
+                        console.log(data)
+                        if (data.codSuccess) {
                             window.location = '/orderSuccess'
+                        }
+                        if (data.razoorpay) {
+                            razorpay(data.order)
                         }
                     })
                 }
             })
         })
+
+        // calling razorpay api
+        const razorpay = function (order) {
+            let options = {
+                key: 'rzp_test_K0f5UoTs0ZVveC', // Enter the Key ID generated from the Dashboard
+                amount: "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                currency: "INR",
+                name: "URBANCART",
+                description: "Purchase Transaction",
+                image: "https://example.com/your_logo",
+                order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                handler: function (response) {
+                    verifyPayment(response, order)
+                },
+                prefill: {
+                    name: "Mohammed Aslam",
+                    email: "aslamtp11@gmail.com",
+                    contact: "9048752691"
+                },
+                notes: {
+                    address: "URBANCART Corporate Office"
+                },
+                theme: {
+                    color: "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.on("payment.failed", function (response) {
+                alert(response.error.code);
+                alert(response.error.description);
+                alert(response.error.source);
+                alert(response.error.step);
+                alert(response.error.reason);
+                alert(response.error.metadata.order_id);
+                alert(response.error.metadata.payment_id);
+            });
+            rzp1.open();
+        }
+
+        // verification payment
+        const verifyPayment = function (payment, order) {
+            console.log('verifying....')
+            $.ajax({
+                url: '/verifyPayment',
+                data: {
+                    payment, order
+                },
+                method: 'post'
+            }).done((data)=>{
+                if(data.status==true){
+                    console.log(data.status)
+                    window.location = '/orderSuccess'
+                }
+            })
+        }
 
     </script>

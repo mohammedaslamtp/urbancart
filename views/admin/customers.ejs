@@ -1,28 +1,28 @@
+<!-- data table cdn adn style -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+
 <div class="container-xxl position-relative bg-white d-flex p-0">
     <!-- Content Start -->
     <div class="content">
         <!-- Table Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="row g-4">
-                <div class="col-sm-12 col-xl-12">
-                    <div class="bg-light rounded h-100 p-4">
-                        <div class="d-flex justify-content-between pb-3">
-                            <h6 class="mb-4">Customers List</h6>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="col-12">
                     <div class="bg-light rounded h-100 p-4">
                         <h6 class="mb-4">Customers List</h6>
                         <div class="table-responsive">
-                            <table class="table text-center">
+                            <table class="table text-center" id="customers_table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Number</th>
-                                        <th scope="col">Full Name</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Phone</th>
-                                        <th scope="col">Actions</th>
+                                        <th scope="col" class="text-center">Number</th>
+                                        <th scope="col" class="text-center">Full Name</th>
+                                        <th scope="col" class="text-center">Email</th>
+                                        <th scope="col" class="text-center">Phone</th>
+                                        <th scope="col" class="text-center">Status</th>
+                                        <th scope="col" class="text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,6 +43,14 @@
                                             </td>
 
                                             <td>
+                                                <% if(el.access){ %>
+                                                    <span class="text-success"> Active</span>
+                                                    <% }else{ %>
+                                                        <span class="text-danger"> Blocked</span>
+                                                        <% } %>
+                                            </td>
+
+                                            <td>
                                                 <% if(el.access===true) { %>
                                                     <a href="/admin/blockUser/<%= el._id %>"><i
                                                             class="fa-solid fa-user-slash"></i></a>
@@ -60,3 +68,9 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            $(document).ready(function () {
+                $('#customers_table').DataTable();
+            });
+        </script>

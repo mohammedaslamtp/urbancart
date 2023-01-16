@@ -1,3 +1,8 @@
+<!-- data table cdn adn style -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+
 <div class="container-xxl position-relative bg-white d-flex p-0">
     <div class="content">
         <!-- Table Start -->
@@ -86,19 +91,19 @@
                         <h6 class="mb-4">Products List</h6>
 
                         <div class="table-responsive">
-                            <table class="table text-center">
+                            <table class="table text-center" id="products_table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">NO</th>
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Brand</th>
-                                        <th scope="col">Tittle</th>
-                                        <th scope="col">Category</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Discount</th>
-                                        <th scope="col">Discription</th>
-                                        <th scope="col">stock</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="col" class="text-center">Number</th>
+                                        <th scope="col" class="text-center">Image</th>
+                                        <th scope="col" class="text-center">Brand</th>
+                                        <th scope="col" class="text-center">Tittle</th>
+                                        <th scope="col" class="text-center">Category</th>
+                                        <th scope="col" class="text-center">Price</th>
+                                        <th scope="col" class="text-center">Discount</th>
+                                        <th scope="col" class="text-center">Discription</th>
+                                        <th scope="col" class="text-center">stock</th>
+                                        <th scope="col" class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -254,3 +259,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('#products_table').DataTable();
+    });
+</script>

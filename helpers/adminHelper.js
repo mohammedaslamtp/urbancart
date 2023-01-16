@@ -263,12 +263,7 @@ module.exports = {
     let orders = await Orders.find().populate("user").populate("cart.productId");
     res.render("admin/orders", { admin: true, orders, user: false, page: "orders" });
      console.log("orders: ", orders);
-     console.log("cart: ", orders[0].cart);
-    console.log("product tittle: ", orders[0].cart[0].productId.tittle);
-    let userAddr;
-    
-    console.log('useraddr:'+userAddr);
-   /*  console.log("user id: ", orders[0].address);
-    console.log("user: ", orders[0].user.addresses); */
+     console.log("single order : ", orders[0]);
+   
   }
 };

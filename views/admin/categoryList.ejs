@@ -1,9 +1,14 @@
+<!-- data table cdn adn style -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+
 <div class="container-xxl position-relative bg-white d-flex p-0">
-    
+
 
     <!-- Content Start -->
     <div class="content">
-       
+
 
         <!-- Table Start -->
         <div class="container-fluid pt-4 px-4">
@@ -11,7 +16,7 @@
                 <div class="col-sm-12 col-xl-12">
                     <div class="bg-light rounded h-100 p-4">
                         <div class="d-flex justify-content-between pb-3">
-                            <h6 class="mb-4">Basic Table</h6>
+                            <h6 class="mb-4">Category</h6>
                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                 data-target="#addCategoryForm" data-whatever="@addCategory">Add Category</button>
                             <div class="modal fade" id="addCategoryForm" tabindex="-1" role="dialog"
@@ -54,14 +59,14 @@
                         </div>
                     </div>
                 </div>
-                <table class="table text-center">
+                <table class="table text-center" id="category_table">
                     <thead>
                         <tr>
-                            <th scope="col">Number</th>
-                            <th scope="col">Image</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Discripiton</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col" class="text-center">Number</th>
+                            <th scope="col" class="text-center">Image</th>
+                            <th scope="col" class="text-center">Category</th>
+                            <th scope="col" class="text-center">Discripiton</th>
+                            <th scope="col" class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -137,3 +142,9 @@
                 </table>
             </div>
         </div>
+
+        <script>
+            $(document).ready(function () {
+                $('#category_table').DataTable();
+            });
+        </script>

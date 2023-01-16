@@ -1,3 +1,7 @@
+<!-- data table cdn adn style -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
 <div class="container-xxl position-relative bg-white d-flex p-0">
     <!-- Table start -->
     <section class="content">
@@ -69,17 +73,17 @@
                     <div class="bg-light rounded h-100 p-4">
                         <h6 class="mb-4">Coupons List</h6>
                         <div class="table-responsive">
-                            <table class="table text-center">
+                            <table class="table text-center" id="coupons_table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">NO</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Discription</th>
-                                        <th scope="col">Discount</th>
-                                        <th scope="col">Min Cart amt</th>
-                                        <th scope="col">Started At</th>
-                                        <th scope="col">Expiry</th>
-                                        <th scope="col">Actions</th>
+                                        <th scope="col" class="text-center">Number</th>
+                                        <th scope="col" class="text-center">Name</th>
+                                        <th scope="col" class="text-center">Discription</th>
+                                        <th scope="col" class="text-center">Discount</th>
+                                        <th scope="col" class="text-center">Min Cart amt</th>
+                                        <th scope="col" class="text-center">Started At</th>
+                                        <th scope="col" class="text-center">Expiry</th>
+                                        <th scope="col" class="text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -102,12 +106,17 @@
                                                 <%= el.minCartAmount %>
                                             </td>
                                             <td title="<%= el.startDate %>">
-                                                <%= el.startDate.getFullYear()%>-<% if(el.startDate.getMonth()<10){ %>0<% } %><%= el.startDate.getMonth()+1%>-<%
-                                                                    if(el.startDate.getDate()<10){ %>0<% } %><%=el.startDate.getDate()%>
+                                                <%= el.startDate.getFullYear()%>-<% if(el.startDate.getMonth()<10){ %>0
+                                                        <% } %>
+                                                            <%= el.startDate.getMonth()+1%>-<%
+                                                                    if(el.startDate.getDate()<10){ %>0<% } %>
+                                                                        <%=el.startDate.getDate()%>
 
                                             <td title="<%= el.expiry %>">
-                                                <%= el.expiry.getFullYear()%>-<% if(el.expiry.getMonth()<10){ %>0<% } %><%= el.expiry.getMonth()+1%>-<% if(el.expiry.getDate()<10){
-                                                                    %>0<% } %><%=el.expiry.getDate()%>
+                                                <%= el.expiry.getFullYear()%>-<% if(el.expiry.getMonth()<10){ %>0<% } %>
+                                                            <%= el.expiry.getMonth()+1%>-<% if(el.expiry.getDate()<10){
+                                                                    %>0<% } %>
+                                                                        <%=el.expiry.getDate()%>
                                             </td>
 
                                             <td>
@@ -209,3 +218,9 @@
         </div>
     </section>
 </div>
+
+<script>
+    $(document).ready(function () {
+            $('#coupons_table').DataTable();
+        });
+</script>

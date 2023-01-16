@@ -1,28 +1,26 @@
+<!-- data table cdn adn style -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+
 <div class="container-xxl position-relative bg-white d-flex p-0">
     <!-- Table start -->
     <section class="content">
         <div class="container-fluid pt-4 px-4">
             <div class="row g-4">
-                <div class="col-sm-12 col-xl-12">
-                    <div class="bg-light rounded h-100 p-4">
-                        <div class="d-flex justify-content-between pb-3">
-                            <h6 class="mb-4">Orders</h6>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-12">
                     <div class="bg-light rounded h-100 p-4">
                         <h6 class="mb-4">Orders</h6>
                         <div class="table-responsive">
-                            <table class="table text-center">
+                            <table class="table text-center" id="orders_table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">User</th>
-                                        <th scope="col">Payment Method</th>
-                                        <th scope="col">Total</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Options</th>
+                                        <th scope="col" class="text-center">Date</th>
+                                        <th scope="col" class="text-center">User</th>
+                                        <th scope="col" class="text-center">Payment Method</th>
+                                        <th scope="col" class="text-center">Total</th>
+                                        <th scope="col" class="text-center">Status</th>
+                                        <th scope="col" class="text-center">Options</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,19 +45,21 @@
                                             <td class="d-flex justify-content-center">
                                                 <select class="form-select form-select-sm w-75"
                                                     aria-label=".form-select-sm example">
-                                                    <option selected>Pending</option>
-                                                    <option value="1">Confirmed</option>
-                                                    <option value="2">Delivered</option>
-                                                    <option value="3">Placed</option>
-                                                    <option value="4">Shipped</option>
-                                                    <option value="5">Cancelled</option>
+                                                    <option value="pending" selected>Pending</option>
+                                                    <option value="Confirmed">Confirmed</option>
+                                                    <option value="Delivered">Delivered</option>
+                                                    <option value="Placed">Placed</option>
+                                                    <option value="Shipped">Shipped</option>
+                                                    <option value="Cancelled">Cancelled</option>
                                                 </select>
                                             </td>
                                             <td>
-                                                <button style="border: none;" data-toggle="modal"
+                                                <a style="border: none;" data-toggle="modal"
                                                     data-target="#productDetails<%= el._id%>"><i
                                                         class="fa-solid fa-circle-info"></i>
-                                                </button> <a href="" data-toggle="modal" data-target="#userDetails"><i class="bi bi-person-vcard-fill"></i></a>
+                                                </a> <a data-toggle="modal"
+                                                    data-target="#userDetails<%= el.user._id%>"><i
+                                                        class="bi bi-person-vcard-fill"></i></a>
                                                 <!-- Product Modal -->
                                                 <div class="modal fade" id="productDetails<%= el._id%>" tabindex="-1"
                                                     role="dialog" aria-labelledby="exampleModalLabel"
@@ -67,8 +67,8 @@
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Ordered
-                                                                    Product
+                                                                <h5 class="modal-title" id="exampleModalLabel">Order
+                                                                    Details
                                                                 </h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                     aria-label="Close">
@@ -78,51 +78,84 @@
                                                             <div class="modal-body w-100 p-4"
                                                                 style="height: 15em;overflow-y: scroll;">
                                                                 <% let userAddr;%>
-                                                                <%  for (const key in el.user.addresses) {
-                                                                    if (el.user.addresses[key]._id.toString()==el.address.toString()) {
-                                                                    userAddr = el.user.addresses[key];
-                                                                    }
-                                                                } %>
-                                                                <i class="bi bi-geo-alt-fill"></i>  <%= userAddr.fullName %>, <%= userAddr.country %>, <%= userAddr.state %>,<br>
-                                                                <%= userAddr.district %>, <%= userAddr.city %>, <%= userAddr.landMark %>, <%= userAddr.pincode%>
-                                                                <% el.cart.forEach((elem,index)=>{ %>
-                                                                    <hr>
-                                                                    <div class="d-flex">
-                                                                        <div class="d-flex">
-                                                                            <img src="<%= elem.productId.images[0] %>"
-                                                                                alt="leo messi" width="160"
-                                                                                height="150">
-                                                                            <div class="text-start ms-2 d-flex flex-column justify-content-center" style="line-height: 10px;">
-                                                                                <p>Title : <%= elem.productId.tittle %></p>
-                                                                                  <p>Quantity : <%= elem.qty %></p>
-                                                                                    <p>Price : <%= elem.productId.price%></p>  
-                                                                                      <p>Description : <%= elem.productId.discription%></p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <% }) %>
+                                                                    <% for (const key in el.user.addresses) { if
+                                                                        (el.user.addresses[key]._id.toString()==el.address.toString())
+                                                                        { userAddr=el.user.addresses[key]; } } %>
+                                                                        <i class="bi bi-geo-alt-fill"></i>
+                                                                        <%= userAddr.fullName %>, <%= userAddr.country
+                                                                                %>, <%= userAddr.state %>,<br>
+                                                                                    <%= userAddr.district %>, <%=
+                                                                                            userAddr.city %>, <%=
+                                                                                                userAddr.landMark %>,
+                                                                                                <%= userAddr.pincode%>
+                                                                                                    <%
+                                                                                                        el.cart.forEach((elem,index)=>
+                                                                                                        { %>
+                                                                                                        <hr>
+                                                                                                        <div
+                                                                                                            class="d-flex">
+                                                                                                            <div
+                                                                                                                class="d-flex">
+                                                                                                                <img src="<%= elem.productId.images[0] %>"
+                                                                                                                    alt="leo messi"
+                                                                                                                    width="160"
+                                                                                                                    height="150">
+                                                                                                                <div class="text-start ms-2 d-flex flex-column justify-content-center"
+                                                                                                                    style="line-height: 10px;">
+                                                                                                                    <p>Title:
+                                                                                                                        <%=
+                                                                                                                            elem.productId.tittle%>
+                                                                                                                    </p>
+                                                                                                                    <p>Quantity:
+                                                                                                                        <%=
+                                                                                                                            elem.qty%>
+                                                                                                                    </p>
+                                                                                                                    <p>Price:
+                                                                                                                        <%=elem.productId.price%>
+                                                                                                                    </p>
+                                                                                                                    <p>Description:
+                                                                                                                        <%=elem.productId.discription%>
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <% }) %>
+                                                                                                            <hr>
+                                                                                                            <p>Purchase
+                                                                                                                Amount :
+                                                                                                                <%=
+                                                                                                                    el.total%>
+                                                                                                            </p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <!-- order details modal end -->
                                                 <!-- Modal -->
-                                                <div class="modal fade" id="userDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                                <div class="modal fade" id="userDetails<%= el.user._id%>" tabindex="-1"
+                                                    role="dialog" aria-labelledby="exampleModalLabel"
                                                     aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <h5 class="modal-title" id="exampleModalLabel">User
+                                                                    Details</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTum03ErYki3ybzaPQfEHgob1MtQPnxT3s5kQ&usqp=CAU" alt="">
+                                                                <p>Name : <%= el.user.fullName%>
+                                                                </p>
+                                                                <p>Email : <%= el.user.email%>
+                                                                </p>
+                                                                <p>Phone : <%= el.user.phone%>
+                                                                </p>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -141,14 +174,7 @@
 </div>
 
 <script>
-    /*   function showProducts(orderId) {
-          console.log('showProducts is working')
-          fetch('/getOrderedProducts', {
-              method:'get',
-              headers:{
-                  'Content-type':'application/json'
-              },
-              body:JSON.stringify()
-          })
-      } */
+    $(document).ready(function () {
+        $('#orders_table').DataTable();
+    });
 </script>
