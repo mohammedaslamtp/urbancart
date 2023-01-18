@@ -24,7 +24,10 @@ const {
   enableCoupon,
   editCoupon,
   orders,
-  getOrderedProducts
+  updateStatus,
+  getOrderedProducts,
+  salesReportDate,
+  toSalesReport
 } = require("../controllers/adminController");
 
 router.get("/", admin);
@@ -48,7 +51,10 @@ router.get("/disableCoupon/:id", disableCoupon);
 router.get("/enableCoupon/:id", enableCoupon);
 router.post("/editCoupon/:id", editCoupon);
 router.get('/orders', orders);
+router.post("/updateStatus", updateStatus);
 router.get("/getOrderedProducts", getOrderedProducts);
+router.get("/salesReportDate", salesReportDate);
+router.post("/toSalesReport", toSalesReport);
 
 
 module.exports = router;

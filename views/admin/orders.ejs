@@ -42,125 +42,146 @@
                                             <td>
                                                 <%= el.total%>
                                             </td>
-                                            <td class="d-flex justify-content-center">
-                                                <select class="form-select form-select-sm w-75"
-                                                    aria-label=".form-select-sm example">
-                                                    <option value="pending" selected>Pending</option>
-                                                    <option value="Confirmed">Confirmed</option>
-                                                    <option value="Delivered">Delivered</option>
-                                                    <option value="Placed">Placed</option>
-                                                    <option value="Shipped">Shipped</option>
-                                                    <option value="Cancelled">Cancelled</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <a style="border: none;" data-toggle="modal"
-                                                    data-target="#productDetails<%= el._id%>"><i
-                                                        class="fa-solid fa-circle-info"></i>
-                                                </a> <a data-toggle="modal"
-                                                    data-target="#userDetails<%= el.user._id%>"><i
-                                                        class="bi bi-person-vcard-fill"></i></a>
-                                                <!-- Product Modal -->
-                                                <div class="modal fade" id="productDetails<%= el._id%>" tabindex="-1"
-                                                    role="dialog" aria-labelledby="exampleModalLabel"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Order
-                                                                    Details
-                                                                </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
+                                            <% if(el.orderStatus=='Cancelled' || el.orderStatus=='Delivered' ){ %>
+                                                <td class="d-flex justify-content-center" id="<%= el._id %>hello">
+                                                    <%= el.orderStatus %>
+                                                </td>
+                                                <% }else{ %>
+                                                    <td class="d-flex justify-content-center" id="<%= el._id%>sts">
+                                                        <select class="form-select form-select-sm w-75"
+                                                            aria-label=".form-select-sm example"
+                                                            onchange="changeStatus(this,'<%= el._id%>')"
+                                                            id="<%= el._id%>">
+                                                            <option value="<%= el.orderStatus %>" selected>
+                                                                <%= el.orderStatus %>
+                                                            </option>
+                                                            <option value="Pending">Pending</option>
+                                                            <option value="Confirmed">Confirmed</option>
+                                                            <option value="Delivered">Delivered</option>
+                                                            <option value="Placed">Placed</option>
+                                                            <option value="Shipped">Shipped</option>
+                                                            <option value="Cancelled">Cancelled</option>
+                                                        </select>
+                                                    </td>
+                                                    <% } %>
+                                                        <td id="<%= el._id %> ">
+                                                            <a style="border: none;" data-toggle="modal"
+                                                                data-target="#productDetails<%= el._id%>"><i
+                                                                    class="fa-solid fa-circle-info"></i>
+                                                            </a> <a data-toggle="modal"
+                                                                data-target="#userDetails<%= el.user._id%>"><i
+                                                                    class="bi bi-person-vcard-fill"></i></a>
+                                                            <!-- Product Modal -->
+                                                            <div class="modal fade" id="productDetails<%= el._id%>"
+                                                                tabindex="-1" role="dialog"
+                                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="exampleModalLabel">Order
+                                                                                Details
+                                                                            </h5>
+                                                                            <button type="button" class="close"
+                                                                                data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body w-100 p-4"
+                                                                            style="height: 15em;overflow-y: scroll;">
+                                                                            <% let userAddr%>
+                                                                                <% for (const key in el.user.addresses){
+                                                                                    if(el.user.addresses[key]._id.toString()==el.address.toString()){
+                                                                                    userAddr=el.user.addresses[key]; } }
+                                                                                    %>
+                                                                                    <i class="bi bi-geo-alt-fill"></i>
+                                                                                    <%= userAddr.fullName %>, <%=
+                                                                                            userAddr.country %>, <%=
+                                                                                                userAddr.state %>,<br>
+                                                                                                <%= userAddr.district %>
+                                                                                                    , <%= userAddr.city
+                                                                                                        %>, <%=
+                                                                                                            userAddr.landMark
+                                                                                                            %>,
+                                                                                                            <%=
+                                                                                                                userAddr.pincode%>
+                                                                                                                <%
+                                                                                                                    el.cart.forEach((elem,index)=>
+                                                                                                                    { %>
+                                                                                                                    <hr>
+                                                                                                                    <div
+                                                                                                                        class="d-flex">
+                                                                                                                        <div
+                                                                                                                            class="d-flex">
+                                                                                                                            <img src="<%= elem.productId.images[0] %>"
+                                                                                                                                alt="leo messi"
+                                                                                                                                width="160"
+                                                                                                                                height="150">
+                                                                                                                            <div class="text-start ms-2 d-flex flex-column justify-content-center"
+                                                                                                                                style="line-height: 10px;">
+                                                                                                                                <p>Title:
+                                                                                                                                    <%=
+                                                                                                                                        elem.productId.tittle%>
+                                                                                                                                </p>
+                                                                                                                                <p>Quantity:
+                                                                                                                                    <%=
+                                                                                                                                        elem.qty%>
+                                                                                                                                </p>
+                                                                                                                                <p>Price:
+                                                                                                                                    <%=elem.productId.price%>
+                                                                                                                                </p>
+                                                                                                                                <p>Description:
+                                                                                                                                    <%=elem.productId.discription%>
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <% })
+                                                                                                                        %>
+                                                                                                                        <hr>
+                                                                                                                        <p>Purchase
+                                                                                                                            Amount
+                                                                                                                            :
+                                                                                                                            <%=
+                                                                                                                                el.total%>
+                                                                                                                        </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div class="modal-body w-100 p-4"
-                                                                style="height: 15em;overflow-y: scroll;">
-                                                                <% let userAddr;%>
-                                                                    <% for (const key in el.user.addresses) { if
-                                                                        (el.user.addresses[key]._id.toString()==el.address.toString())
-                                                                        { userAddr=el.user.addresses[key]; } } %>
-                                                                        <i class="bi bi-geo-alt-fill"></i>
-                                                                        <%= userAddr.fullName %>, <%= userAddr.country
-                                                                                %>, <%= userAddr.state %>,<br>
-                                                                                    <%= userAddr.district %>, <%=
-                                                                                            userAddr.city %>, <%=
-                                                                                                userAddr.landMark %>,
-                                                                                                <%= userAddr.pincode%>
-                                                                                                    <%
-                                                                                                        el.cart.forEach((elem,index)=>
-                                                                                                        { %>
-                                                                                                        <hr>
-                                                                                                        <div
-                                                                                                            class="d-flex">
-                                                                                                            <div
-                                                                                                                class="d-flex">
-                                                                                                                <img src="<%= elem.productId.images[0] %>"
-                                                                                                                    alt="leo messi"
-                                                                                                                    width="160"
-                                                                                                                    height="150">
-                                                                                                                <div class="text-start ms-2 d-flex flex-column justify-content-center"
-                                                                                                                    style="line-height: 10px;">
-                                                                                                                    <p>Title:
-                                                                                                                        <%=
-                                                                                                                            elem.productId.tittle%>
-                                                                                                                    </p>
-                                                                                                                    <p>Quantity:
-                                                                                                                        <%=
-                                                                                                                            elem.qty%>
-                                                                                                                    </p>
-                                                                                                                    <p>Price:
-                                                                                                                        <%=elem.productId.price%>
-                                                                                                                    </p>
-                                                                                                                    <p>Description:
-                                                                                                                        <%=elem.productId.discription%>
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <% }) %>
-                                                                                                            <hr>
-                                                                                                            <p>Purchase
-                                                                                                                Amount :
-                                                                                                                <%=
-                                                                                                                    el.total%>
-                                                                                                            </p>
+                                                            <!-- order details modal end -->
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="userDetails<%= el.user._id%>"
+                                                                tabindex="-1" role="dialog"
+                                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="exampleModalLabel">User
+                                                                                Details</h5>
+                                                                            <button type="button" class="close"
+                                                                                data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>Name : <%= el.user.fullName%>
+                                                                            </p>
+                                                                            <p>Email : <%= el.user.email%>
+                                                                            </p>
+                                                                            <p>Phone : <%= el.user.phone%>
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-dismiss="modal">Close</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- order details modal end -->
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="userDetails<%= el.user._id%>" tabindex="-1"
-                                                    role="dialog" aria-labelledby="exampleModalLabel"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">User
-                                                                    Details</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p>Name : <%= el.user.fullName%>
-                                                                </p>
-                                                                <p>Email : <%= el.user.email%>
-                                                                </p>
-                                                                <p>Phone : <%= el.user.phone%>
-                                                                </p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Close</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                                        </td>
                                         </tr>
                                         <% }) %>
                                 </tbody>
@@ -177,4 +198,24 @@
     $(document).ready(function () {
         $('#orders_table').DataTable();
     });
+</script>
+
+<script>
+    const changeStatus = function (newStatus, orderId) {
+        let value = $('#' + orderId).val()
+        fetch('/admin/updateStatus', {
+            method: 'post',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ newStatus: newStatus.value, orderId: orderId })
+        }).then((data) => {
+            return data.json()
+        }).then((data) => {
+            console.log('return data', data);
+            if (newStatus.value == 'Cancelled' || newStatus.value == 'Delivered') {
+                $('#' + orderId + 'sts').html(newStatus.value)
+            }
+        })
+    }
 </script>

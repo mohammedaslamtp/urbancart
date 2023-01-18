@@ -252,7 +252,7 @@ module.exports = {
   },
 
   // to show the ordered products in orders:
-  getOrderedProducts:async (req, res) => {
+  getOrderedProducts: async (req, res) => {
     let orderId = req.body.orderId;
     let orders = await Orders.find().populate("user").populate("cart.productId");
     console.log("orders: ", orders);
@@ -262,8 +262,78 @@ module.exports = {
   orders: async (req, res) => {
     let orders = await Orders.find().populate("user").populate("cart.productId");
     res.render("admin/orders", { admin: true, orders, user: false, page: "orders" });
-     console.log("orders: ", orders);
-     console.log("single order : ", orders[0]);
-   
+    /* console.log(orders) */
+    /* console.log(orders[0].user.addresses[0]); */
+  },
+
+  // to update order status:
+  updateStatus: (req, res) => {
+    console.log("order id: ", req.body.orderId);
+    let newStatus = req.body.newStatus;
+    console.log("new status fully: ", newStatus);
+    let orderId = req.body.orderId;
+    Orders.findOneAndUpdate(
+      { _id: orderId },
+      { $set: { orderStatus: newStatus } },
+      { new: true },
+      (err, doc) => {
+        if (err) {
+          console.log("new order status updation failed! ", err);
+        } else {
+          console.log("new order updation successful..");
+          console.log(doc);
+          res.json({ current_status: doc.orderStatus, status: true });
+        }
+      }
+    );
+  },
+
+  // to show sales report:
+  toSalesReport: async (req, res) => {
+    let orders = await Orders.find();
+    let salesData = await Orders.aggregate([
+      {
+        $match: {
+          orderStatus: { $eq: "Delivered" },
+          $and: [
+            { date: { $gt: new Date(req.body.fromDate) } },
+            { date: { $lt: new Date(req.body.toDate) } }
+          ]
+        }
+      },
+      {
+        $lookup: {
+          from: "customers",
+          localField: "user",
+          foreignField: "_id",
+          as: "userData"
+        }
+      },
+      {
+        $sort: { createdAt: -1 }
+      }
+    ]);
+
+    let grandTotal = await Orders.aggregate([
+      {
+        $match: {
+          orderStatus: { $eq: "Delivered" },
+          $and: [
+            { date: { $gt: new Date(req.body.fromDate) } },
+            { date: { $lt: new Date(req.body.toDate) } }
+          ]
+        }
+      },
+      {
+        $group: { _id: null, sum: { $sum: "$total" } }
+      }
+    ]);
+    res.render("admin/salesReport", {
+      user: false,
+      admin: true,
+      grandTotal,
+      salesData,
+      page: "salesReport"
+    });
   }
 };

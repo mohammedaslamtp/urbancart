@@ -396,12 +396,10 @@ module.exports = {
               return new String(el.userId).trim() == new String(userId).trim();
             });
             if (isUsed >= 0) {
-              console.log("isUsed exists");
               response.used = true;
-              /* response.min = doc.minCartAmount; */
             } else {
               response.used = false;
-              console.log("user didn't used yet");
+            
               if (doc == null || doc == undefined) {
                 console.log("failed coupon not found..", doc);
               } else {
@@ -416,7 +414,6 @@ module.exports = {
                   response.total = totalPrice;
                   response.min = doc.minCartAmount;
                 }
-                console.log("total price ", totalPrice);
               }
               response.total = totalPrice;
               response.discount = doc.discount;
@@ -431,14 +428,6 @@ module.exports = {
       res.json(response);
     });
     console.log("response: ", response);
-
-    // let couponId = coupon._id;
-    // console.log("coupon id: " + couponId);
-
-    /* Coupon.findOneAndUpdate(
-        { _id: couponId },
-        { $push: { usedUsers: id }, $set: { updated: Date.now() } },
-        { returnNewDocument: true }) */
   },
 
   // to place a order:
@@ -484,7 +473,7 @@ module.exports = {
         nonDiscountedAmount: user.cart.totalPrice,
         paymentMethod: paymentMethod,
         paymentStatus: "pending",
-        orderStatus: "placed",
+        orderStatus: "pending",
         date: Date.now(),
         total: newTotal
       });
@@ -507,12 +496,27 @@ module.exports = {
           if (req.body.data.paymentMethod == "COD") {
             response.codSuccess = true;
             console.log("cod success...");
-            console.log(response);
+            Orders.updateOne(
+              { _id: doc._id },
+              {
+                $set: {
+                  orderStatus: "placed"
+                }
+              },
+              function (err, doc) {
+                if (err) {
+                  console.log("COD Order status updation failed! ");
+                  console.log(err);
+                } else {
+                  console.log("COD order status updation succussful... ", doc);
+                }
+              }
+            );
             res.json(response);
           } else {
             var options = {
               amount: newTotal * 100, // amount in the smallest currency unit
-              currency: "INR",
+              currency: "USD",
               receipt: "" + doc._id
             };
             instance.orders.create(options, function (err, order) {
@@ -522,7 +526,6 @@ module.exports = {
                 console.log("This is the order: ", order);
                 response.razoorpay = true;
                 response.order = order;
-                console.log(response);
                 res.json(response);
               }
             });
@@ -547,7 +550,6 @@ module.exports = {
       hmac.update(details.razorpay_order_id + "|" + details.razorpay_payment_id);
       hmac = hmac.digest("hex");
       if (hmac == details.razorpay_signature) {
-        console.log("payment success $$$$$$$$$ ");
         Orders.updateOne(
           { _id: order.receipt },
           {
@@ -572,6 +574,26 @@ module.exports = {
     } catch (err) {
       console.log("payment verification area ERROR!!! ", err);
     }
+  },
+
+  // to cancel a order for user:
+  cancelOrder: async (req, res) => {
+    console.log(req.body);
+    let id = req.body.orderId;
+    Orders.findOneAndUpdate(
+      { _id: id },
+      { $set: { orderStatus: "Cancelled" } },
+      { new: true },
+      (err, doc) => {
+        if (err) {
+          console.log("order cancellation failed! ", err);
+          res.json({status:false})
+        } else {
+          console.log("order cancellation successful.. ", doc);
+          res.json({ status: doc.orderStatus });
+        }
+      }
+    );
   }
 
   // to set as defualt address

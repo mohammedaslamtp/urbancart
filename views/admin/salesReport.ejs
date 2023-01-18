@@ -1,0 +1,73 @@
+<!-- data table cdn adn style -->
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+ -->
+<!-- PDF downloader -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+    integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<div class="content">
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">Recent Orders</h6>
+                <button class="btn btn-dark" id="download-button"><i class="bi bi-printer"></i></button>
+            </div>
+            <div id="invoice" class="table-responsive">
+                <table id="sales_report" class="table text-start align-middle table-bordered table-hover mb-0">
+                    <thead>
+                        <tr class="text-dark">
+                            <th scope="col" class="text-center">Sr. NO</th>
+                            <th scope="col" class="text-center">Date & Time</th>
+                            <th scope="col" class="text-center">Order ID</th>
+                            <th scope="col" class="text-center">Customer</th>
+                            <th scope="col" class="text-center">Item count</th>
+                            <th scope="col" class="text-center">Discount</th>
+                            <th scope="col" class="text-center">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <% for(let i=0;i<salesData.length;i++) { %>
+                            <tr>
+                                <td class="text-center"><%= i+1 %></td>
+                                <td class="text-center">
+                                    <%=salesData[i].date.toString().split('GMT')[0] %>
+                                </td>
+                                <td class="text-center"><%=salesData[i]._id%></td>
+                                <td class="text-center"><%=salesData[i].userData[0].fullName%></td>
+                                <td class="text-center"><%=salesData[i].cart.length%></td>
+                                <td class="text-center">$<%=salesData[i].nonDiscountedAmount - salesData[i].total%>.00</td>
+                                <td class="text-center">$<%=salesData[i].total%>.00</td>
+                            </tr>
+                            <% } %>
+                            <tr>
+                                <th colspan="6" class="text-end">Grand Total</th>
+                                <th class="text-center">$<% if(grandTotal) {%><%= grandTotal[0].sum%><% }%>.00</th>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 
+<script>
+    $(document).ready(function () {
+        $('#sales_report').DataTable();
+    });
+</script> -->
+
+<script>
+    const button = document.getElementById('download-button');
+
+    function generatePDF() {
+        // Choose the element that your content will be rendered to.
+        const element = document.getElementById('invoice');
+        // Choose the element and save the PDF for your user.
+        html2pdf().from(element).save();
+    }
+
+    button.addEventListener('click', generatePDF);
+</script>

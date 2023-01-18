@@ -28,7 +28,10 @@ const {
   couponGenerate,
   placeOrder,
   orderSuccess,
-  verifyPayment
+  verifyPayment,
+ /*  updateStatus, */
+  orders,
+  cancelOrder
   /*  setAsDefualtAddress */
 } = require("../controllers/userController");
 const userDataBase = require("../models/userDataBase");
@@ -67,6 +70,10 @@ router.post("/couponGenerate", couponGenerate);
 router.post("/placeOrder", placeOrder);
 router.get("/orderSuccess", orderSuccess);
 router.post("/verifyPayment", verifyPayment);
+router.get("/orders", orders);
+router.post("/cancelOrder", cancelOrder);
+
+
 
 
 // router.post("/setAsDefualtAddress", setAsDefualtAddress);

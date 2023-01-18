@@ -6,6 +6,7 @@ const customer = require("../models/userDataBase");
 const products = require("../models/productDataBase");
 const category = require("../models/categoryDataBase");
 const objId = require("mongoose").Types.ObjectId;
+const Orders = require("../models/orders");
 
 module.exports = {
   /* user home page */
@@ -346,6 +347,26 @@ module.exports = {
 
   // razoorpay payment verification:
   verifyPayment: (req, res) => {
-    userHelpers.verifyPayment(req,res)
+    userHelpers.verifyPayment(req, res);
+  },
+
+  // to veiw orders:
+  orders: async (req, res) => {
+    let users = req.session.user;
+    let showCategory = await category.find({ access: true });
+    let orders = await Orders.find().populate("user").populate("cart.productId");
+    res.render("user/viewOrders", {
+      user: true,
+      admin: false,
+      showCategory,
+      users,
+      orders,
+      page: "orders"
+    });
+  },
+
+  // to cancel a order:
+  cancelOrder: (req, res) => {
+    userHelpers.cancelOrder(req, res)
   }
 };

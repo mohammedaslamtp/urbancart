@@ -1,16 +1,16 @@
 const express = require("express");
-const adminHelper = require("../helpers/adminHelper");
 const mongoose = require("mongoose");
+const adminHelper = require("../helpers/adminHelper");
 const category = require("../models/categoryDataBase");
 const customers = require("../models/userDataBase");
 const products = require("../models/productDataBase");
 const coupons = require("../models/couponsDataBase");
 
-
 module.exports = {
   /* admin home page */
   admin: (req, res) => {
     if (req.session.admin) {
+      adminHelper
       res.render("admin/index", { user: false, admin: true, page: "dashboard" });
     } else {
       res.redirect("/admin/adminLogIn");
@@ -45,7 +45,7 @@ module.exports = {
   /* admin logout */
   adminLogout: (req, res) => {
     req.session.adminLoggedIn = false;
-    req.session.admin = null;
+    req.session.destroy();
     res.redirect("/admin/adminLogin");
   },
 
@@ -166,9 +166,25 @@ module.exports = {
     adminHelper.orders(req, res);
   },
 
+  // to update order status:
+  updateStatus: (req, res) => {
+    console.log('calling...')
+    adminHelper.updateStatus(req, res);
+  },
+
   // to show the ordered products in orders:
   getOrderedProducts: (req, res) => {
-    console.log('this is working..')
+    console.log("this is working..");
     adminHelper.getOrderedProducts(req, res);
+  },
+
+  // to get date of sales report:
+  salesReportDate: (req, res) => {
+    res.render("admin/salesReportDate", { user: false, admin: true, page: "sales" });
+  },
+
+  // to get disply sales report:
+  toSalesReport: (req, res) => {
+    adminHelper.toSalesReport(req, res);
   }
 };

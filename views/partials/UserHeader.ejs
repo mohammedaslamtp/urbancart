@@ -1,4 +1,8 @@
+<!--bootstrap.min.css-->
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+
 <!-- linking costum css category dropdown -->
+
 <link rel="stylesheet" href="/css/userCategoryDropdown.css" type="text/css">
 <!-- linking end here -->
 
@@ -10,24 +14,24 @@
       data-minus-value-mobile="55" data-speed="1000">
 
       <!-- Start Top Search -->
-      <div class="top-search">
+      <!-- <div class="top-search">
         <div class="container">
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-search"></i></span>
-            <input type="text" class="form-control" placeholder="Search">
+            <input type="text" class="form-control" placeholder="Search" id="searchInput" name="q" onkeyup="searchIt(this.value)">
             <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- End Top Search -->
 
       <div class="container">
         <!-- Start Atribute Navigation -->
         <div class="attr-nav">
           <ul>
-            <li class="search">
+            <!--  <li class="search">
               <a href="#"><span class="lnr lnr-magnifier"></span></a>
-            </li><!--/.search-->
+            </li> --><!--/.search-->
             <li class="nav-setting dropdown">
               <a href="#"><i class="bi bi-person dropdown-toggle" data-bs-toggle="dropdown"
                   aria-expanded="false"></i></a>
@@ -40,6 +44,7 @@
                     <li><a class="dropdown-item" href="/login">Login</a></li>
                     <% } %>
               </ul>
+             
             </li><!--/.search-->
 
             <li class="dropdown <% if(page==" cart"){ %>active <% } %>">
@@ -69,11 +74,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
           <ul class="nav navbar-nav navbar-center" data-in="fadeInDown" data-out="fadeOutUp">
-            <li class=" nav-item <% if(page==" home"){ %>active <% } %>"><a href="/">Home</a></li>
-            <li class="nav-item <% if(page==" furnitures"){ %>active <% } %>"><a href="/products">Furnitures</a></li>
-            <li class="nav-item <% if(page==" orders"){ %>active <% } %>"><a href="">Orders</a></li>
+            <li style="display: flex; align-items: center;" class=" nav-item <% if(page==" home"){ %>active <% } %>"><a href="/">Home</a></li>
+            <li style="display: flex; align-items: center;" class="nav-item <% if(page==" furnitures"){ %>active <% } %>"><a href="/products">Furnitures</a></li>
+            <li style="display: flex; align-items: center;" class="nav-item <% if(page==" orders"){ %>active <% } %>"><a href="/orders">Orders</a></li>
 
-            <li class="nav-item">
+            <li class="nav-item" style="display: flex; align-items: center;">
               <div class="dropdown text-dark">
                 <a class="dropbtn">Category</a>
                 <div class="dropdown-content">
@@ -99,7 +104,6 @@
               align-items: center;
             }
           </style>
-
 
         </div><!-- /.navbar-collapse -->
       </div><!--/.container-->

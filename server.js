@@ -56,7 +56,7 @@ app.use("/admin", adminRouter);
 
 // 404 error handling middleware:
 app.use((req, res, next) => {
-  res.status(404).send("Sorry, we couldn't find that!");
+  res.status(404).render("user/404",{user:false,admin:false});
 });
 
 
