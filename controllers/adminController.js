@@ -10,7 +10,7 @@ module.exports = {
   /* admin home page */
   admin: (req, res) => {
     if (req.session.admin) {
-      adminHelper
+      /* adminHelper.dashboard(req, res); */
       res.render("admin/index", { user: false, admin: true, page: "dashboard" });
     } else {
       res.redirect("/admin/adminLogIn");
@@ -161,6 +161,30 @@ module.exports = {
     adminHelper.editCoupon(req, res);
   },
 
+  // to banners management:
+  banners: (req, res) => {
+    adminHelper.banners(req, res);
+  },
+
+  // to add a new banner:
+  addBanner: (req, res) => {
+    adminHelper.addBanner(req, res);
+  },
+
+  /* to edit a banner */
+  editBanner: (req, res) => {
+    console.log("input :" + req.file, req.body);
+    adminHelper.editBanner(req, res);
+  },
+
+  /* to delete a category */
+  deleteBanner: (req, res) => {
+    let BannerId = req.params.id;
+    adminHelper.delBanner(BannerId).then((response) => {
+      res.redirect("/admin/banners");
+    });
+  },
+
   // to orders management:
   orders: (req, res) => {
     adminHelper.orders(req, res);
@@ -168,7 +192,7 @@ module.exports = {
 
   // to update order status:
   updateStatus: (req, res) => {
-    console.log('calling...')
+    console.log("calling...");
     adminHelper.updateStatus(req, res);
   },
 

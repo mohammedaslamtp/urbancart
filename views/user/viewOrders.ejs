@@ -10,9 +10,10 @@
                                 <div class="col-12">
                                     <div class="d-flex justify-content-around align-items-center mb-5"
                                         style="margin-top: 2em;flex-wrap: wrap;">
-                                        <h1 class="fw-bold mb-0 text-black">orders is Empty</h1>
+                                        <h1 class="fw-bold mb-0 text-muted">orders is Empty</h1>
                                     </div>
                                     <% }else{ %>
+                                        <h1 class=" text-muted text-center">Your orders</h1>
                                         <div>
 
                                             <table class="table table-borderless table-light w-100">
@@ -55,7 +56,10 @@
                                                                         <%=el.paymentMethod%>
                                                                     </td>
                                                                     <td>
-                                                                        <%=el.orderStatus%>
+                                                                        <span class="badge badge-secondary" style="border: none;">
+                                                                            <%=el.orderStatus%>
+                                                                        </span>
+
                                                                     </td>
                                                                     <td>
                                                                         <% if(el.orderStatus=='Cancelled' ||

@@ -44,14 +44,14 @@
                     <li><a class="dropdown-item" href="/login">Login</a></li>
                     <% } %>
               </ul>
-             
+
             </li><!--/.search-->
 
             <li class="dropdown <% if(page==" cart"){ %>active <% } %>">
                 <a href="/userCart" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="bi bi-cart2"></i>
                   <% if (users) { %>
-                    <span class="badge badge-bg-1" id="cart-count">
+                    <span class="badge badge-bg-1" id="cart-count" style="background:#ed9124;border:none">
                       <%= users.cart.items.length %>
                     </span>
                     <% } %>
@@ -74,9 +74,12 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
           <ul class="nav navbar-nav navbar-center" data-in="fadeInDown" data-out="fadeOutUp">
-            <li style="display: flex; align-items: center;" class=" nav-item <% if(page==" home"){ %>active <% } %>"><a href="/">Home</a></li>
-            <li style="display: flex; align-items: center;" class="nav-item <% if(page==" furnitures"){ %>active <% } %>"><a href="/products">Furnitures</a></li>
-            <li style="display: flex; align-items: center;" class="nav-item <% if(page==" orders"){ %>active <% } %>"><a href="/orders">Orders</a></li>
+            <li style="display: flex; align-items: center;" class=" nav-item <% if(page==" home"){ %>active <% } %>"><a
+                  href="/">Home</a></li>
+            <li style="display: flex; align-items: center;" class="nav-item <% if(page==" furnitures"){ %>active <% } %>
+                "><a href="/products">Furnitures</a></li>
+            <li style="display: flex; align-items: center;" class="nav-item <% if(page==" orders"){ %>active <% } %>"><a
+                  href="/orders">Orders</a></li>
 
             <li class="nav-item" style="display: flex; align-items: center;">
               <div class="dropdown text-dark">

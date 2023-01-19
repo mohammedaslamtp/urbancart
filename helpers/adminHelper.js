@@ -5,8 +5,11 @@ const product = require("../models/productDataBase");
 const objId = require("mongoose").Types.ObjectId;
 const coupon = require("../models/couponsDataBase");
 const Orders = require("../models/orders");
+const Banners = require("../models/banners");
 
 module.exports = {
+  // to show
+
   /* to check is admin or not when login */
   isAdmin: (adminData) => {
     return new Promise(async (resolve, reject) => {
@@ -33,7 +36,6 @@ module.exports = {
   addNewCategory: (file, data, res, cb) => {
     console.log(file.path);
     let filePath = file.path.substring(6);
-    console.log("filePath  : " + filePath);
     const categoryItem = new category({
       category: data.category,
       discription: data.discription,
@@ -55,7 +57,6 @@ module.exports = {
     let data = req.body;
     let categoryId = req.params.id;
     console.log(data);
-    console.log("category id: " + categoryId);
     let image = req.file;
     if (image) {
       var imagePath = image.path.substring(6);
@@ -251,6 +252,67 @@ module.exports = {
       });
   },
 
+  // to banner management:
+  banners: async (req, res) => {
+    let banners = await Banners.find({access:true});
+    res.render("admin/banners", { user: false, admin: true, banners, page: "banners" });
+  },
+
+  // to add a banner:
+  addBanner: (req, res) => {
+    let filePath = req.file.path.substring(6);
+    const banner = new Banners({
+      title: req.body.title,
+      description: req.body.description,
+      image: filePath
+    });
+    banner.save((err, doc) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("banner added successfully..");
+        console.log(doc);
+        res.redirect("/admin/banners");
+      }
+    });
+  },
+
+  // to update a banner:
+  editBanner: (req, res) => {
+    let data = req.body;
+    let bannerId = req.params.id;
+    console.log(data);
+    let image = req.file;
+    if (image) {
+      var imagePath = image.path.substring(6);
+      Banners.findByIdAndUpdate(bannerId, { $set: { image: imagePath } }).then(() => {
+        console.log("Banner: image upated...");
+      });
+    }
+    Banners.findByIdAndUpdate(
+      { _id: bannerId },
+      {
+        $set: {
+          title: data.title,
+          description: data.description
+        }
+      }
+    ).then(() => {
+      res.redirect("/admin/banners");
+    });
+  },
+
+  /* to delete a category */
+  delBanner: (bannerId) => {
+    return new Promise((resolve, reject) => {
+      Banners
+        .findByIdAndUpdate({ _id: objId(bannerId) }, { access: false })
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
+
   // to show the ordered products in orders:
   getOrderedProducts: async (req, res) => {
     let orderId = req.body.orderId;
@@ -262,8 +324,6 @@ module.exports = {
   orders: async (req, res) => {
     let orders = await Orders.find().populate("user").populate("cart.productId");
     res.render("admin/orders", { admin: true, orders, user: false, page: "orders" });
-    /* console.log(orders) */
-    /* console.log(orders[0].user.addresses[0]); */
   },
 
   // to update order status:

@@ -390,8 +390,6 @@ module.exports = {
             response.expiry = true;
             console.log("coupon expired.. ", doc.expiry);
           } else {
-            console.log("coupon not expired... ", doc.expiry);
-            console.log("doc has couopon....");
             let isUsed = doc.usedUsers.findIndex((el) => {
               return new String(el.userId).trim() == new String(userId).trim();
             });
@@ -399,11 +397,10 @@ module.exports = {
               response.used = true;
             } else {
               response.used = false;
-            
+
               if (doc == null || doc == undefined) {
                 console.log("failed coupon not found..", doc);
               } else {
-                console.log("success ", doc);
                 if (totalPrice >= doc.minCartAmount) {
                   totalPrice = totalPrice - doc.discount;
                   response.status = true;
@@ -420,14 +417,12 @@ module.exports = {
             }
           }
         } else {
-          console.log("coupon not found");
           response.error = true;
           response.total = totalPrice;
         }
       }
       res.json(response);
     });
-    console.log("response: ", response);
   },
 
   // to place a order:
@@ -587,7 +582,7 @@ module.exports = {
       (err, doc) => {
         if (err) {
           console.log("order cancellation failed! ", err);
-          res.json({status:false})
+          res.json({ status: false });
         } else {
           console.log("order cancellation successful.. ", doc);
           res.json({ status: doc.orderStatus });

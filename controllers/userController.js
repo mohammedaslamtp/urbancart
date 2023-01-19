@@ -152,10 +152,14 @@ module.exports = {
 
   /* product detail showing */
   productDetail: async (req, res) => {
+    try {
+      
+    
     let users = req.session.user;
     let showCategory = await category.find({ access: true });
     let proId = req.params.id;
-    let productData = await products.find({ _id: proId });
+    console.log(proId)
+    let productData = await products.findById({ _id: proId });
     console.log("product detail :" + productData);
     res.render("user/productDetail", {
       user: true,
@@ -165,6 +169,11 @@ module.exports = {
       productData,
       page: "product-detail"
     });
+    } catch (err) {
+      console.log('product details page ERROR!')
+      console.log(err)
+      res.redirect('/user/404')
+      }
   },
 
   /* Product searching */
@@ -224,7 +233,7 @@ module.exports = {
       let users = req.session.user;
       let showCategory = await category.find({ access: true });
       res.render("user/userProfile", {
-        user: false,
+        user: true, 
         admin: false,
         showCategory,
         users,

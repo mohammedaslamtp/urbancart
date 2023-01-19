@@ -27,7 +27,11 @@ const {
   updateStatus,
   getOrderedProducts,
   salesReportDate,
-  toSalesReport
+  toSalesReport,
+  banners,
+  addBanner,
+  editBanner,
+  deleteBanner
 } = require("../controllers/adminController");
 
 router.get("/", admin);
@@ -50,11 +54,14 @@ router.post("/addCoupon", addCoupon);
 router.get("/disableCoupon/:id", disableCoupon);
 router.get("/enableCoupon/:id", enableCoupon);
 router.post("/editCoupon/:id", editCoupon);
-router.get('/orders', orders);
+router.get("/orders", orders);
 router.post("/updateStatus", updateStatus);
 router.get("/getOrderedProducts", getOrderedProducts);
 router.get("/salesReportDate", salesReportDate);
 router.post("/toSalesReport", toSalesReport);
-
+router.get("/banners", banners);
+router.post("/addBanner", fileUpload.single("image"), addBanner);
+router.post("/editBanner/:id", fileUpload.single("image"), editBanner);
+router.get("/deleteBanner/:id", deleteBanner);
 
 module.exports = router;

@@ -59,5 +59,11 @@ app.use((req, res, next) => {
   res.status(404).render("user/404",{user:false,admin:false});
 });
 
+//Handle 500
+app.use((req, res, next) => {
+  res.status(500).render("user/500", { user: false, admin: false });
+});
+
+
 
 app.listen(process.env.PORT || 3000);
