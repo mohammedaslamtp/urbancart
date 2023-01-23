@@ -19,7 +19,9 @@
                         <i class="fa fa-chart-line fa-3x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">Today Sale</p>
-                            <h6 class="mb-0">$1234</h6>
+                            <h6 class="mb-0">
+                                <%= todaySales %>
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -28,7 +30,9 @@
                         <i class="fa fa-chart-bar fa-3x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">Total Sale</p>
-                            <h6 class="mb-0">$1234</h6>
+                            <h6 class="mb-0">
+                                <%= totalSales %>
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -37,7 +41,8 @@
                         <i class="fa fa-chart-area fa-3x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">Today Revenue</p>
-                            <h6 class="mb-0">$1234</h6>
+                            <h6 class="mb-0">$<%= todayRevnue %>
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -46,7 +51,8 @@
                         <i class="fa fa-chart-pie fa-3x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">Total Revenue</p>
-                            <h6 class="mb-0">$1234</h6>
+                            <h6 class="mb-0">$<%= totalRevnue %>
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -82,7 +88,7 @@
 
 
         <!-- Recent Sales Start -->
-        <div class="container-fluid pt-4 px-4">
+        <!--<div class="container-fluid pt-4 px-4">
             <div class="bg-light text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <h6 class="mb-0">Recent Salse</h6>
@@ -151,14 +157,14 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Recent Sales End -->
 
 
         <!-- Widgets Start -->
-        <div class="container-fluid pt-4 px-4">
+        <div class="container-fluid pt-4 px-4 d-flex justify-content-center">
             <div class="row g-4">
-                <div class="col-sm-12 col-md-6 col-xl-4">
+                <!-- <div class="col-sm-12 col-md-6 col-xl-4">
                     <div class="h-100 bg-light rounded p-4">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <h6 class="mb-0">Messages</h6>
@@ -209,7 +215,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-sm-12 col-md-6 col-xl-4">
                     <div class="h-100 bg-light rounded p-4">
                         <div class="d-flex align-items-center justify-content-between mb-4">
@@ -219,7 +225,7 @@
                         <div id="calender"></div>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-xl-4">
+                <!--   <div class="col-sm-12 col-md-6 col-xl-4">
                     <div class="h-100 bg-light rounded p-4">
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <h6 class="mb-0">To Do List</h6>
@@ -275,7 +281,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- Widgets End -->
@@ -286,14 +292,13 @@
             <div class="bg-light rounded-top p-4">
                 <div class="row">
                     <div class="col-12 col-sm-6 text-center text-sm-start">
-                        &copy; <a href="#">URBANCART</a>, All Right Reserved.
+                        &copy; <a target="_blank" href="https://www.instagram.com/tp._.aslam/">URBANCART</a>, All Right
+                        Reserved.
                     </div>
                     <div class="col-12 col-sm-6 text-center text-sm-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
                         Designed By <a href="">MOHAMMED ASLAM</a>
                         </br>
-                        Distributed By <a class="border-bottom" href="https://www.instagram.com/tp._.aslam/"
-                            target="_blank">URBANCART</a>
+                        Distributed By <a class="border-bottom" href="#">URBANCART</a>
                     </div>
                 </div>
             </div>
@@ -313,9 +318,9 @@
 <% let months = yearlySales.map((val) => { return val._id.month }) %>
 <% let yearlyCount = yearlySales.map((val) => { return val.totalSales }) %>
 
-    console.log(<%=months%>)
+        console.log(<%=months %>)
     console.log(<%=yearlyCount %>)
-   
+
     // Worldwide Sales Chart
     let ctx1 = $("#worldwide-sales").get(0).getContext("2d");
     var myChart1 = new Chart(ctx1, {
@@ -339,8 +344,8 @@
 <% let salesCount = salesData.map((val) => { return val.count }) %>
 
 
-    // Salse & Revenue Chart
-    let  ctx2 = $("#salse-revenue").get(0).getContext("2d");
+        // Salse & Revenue Chart
+        let  ctx2 = $("#salse-revenue").get(0).getContext("2d");
     var myChart2 = new Chart(ctx2, {
         type: "line",
         data: {

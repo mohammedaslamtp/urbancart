@@ -34,8 +34,55 @@ module.exports = {
   dashboard: async (req, res) => {
     try {
       const orders = await Orders.find({});
-      let todaySale = await Orders.countDocuments({date:Date.now(),});
-      console.log("Total count:  " + salesDataco);
+      let today = new Date();
+      let todayStarting = new Date(today.setUTCHours(0, 0, 0, 0));
+      let todayEnding = new Date(today.setUTCHours(23, 59, 59, 999));
+
+      // finding today sales count:
+      let todaySales = await Orders.countDocuments({
+        date: { $gt: todayStarting, $lt: todayEnding },
+        orderStatus: { $eq: "Delivered" }
+      });
+      // finding total
+      let totalSales = await Orders.countDocuments({
+        orderStatus: { $eq: "Delivered" }
+      });
+
+      // today revenue:
+      let todayRev = await Orders.aggregate([
+        {
+          $match: {
+            $and: [
+              { date: { $gt: todayStarting, $lt: todayEnding } },
+              { orderStatus: { $eq: "Delivered" } }
+            ]
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            todayRevenue: { $sum: "$total" }
+          }
+        }
+      ]);
+      let todayRevnue = todayRev[0].todayRevenue;
+
+      // total revenue:
+      let totalRev = await Orders.aggregate([
+        {
+          $match: {
+            orderStatus: { $eq: "Delivered" }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalRevenue: { $sum: "$total" }
+          }
+        }
+      ]);
+      let totalRevnue = totalRev[0].totalRevenue;
+      console.log('total Revenue: ',totalRevnue)
 
       // start of month:
       const startOfMonth = new Date();
@@ -111,6 +158,10 @@ module.exports = {
         user: false,
         admin: true,
         page: "dashboard",
+        todaySales,
+        todayRevnue,
+        totalRevnue,
+        totalSales,
         salesData,
         yearlySales
       });
