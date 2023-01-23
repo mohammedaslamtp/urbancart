@@ -5,13 +5,14 @@ const category = require("../models/categoryDataBase");
 const customers = require("../models/userDataBase");
 const products = require("../models/productDataBase");
 const coupons = require("../models/couponsDataBase");
+const Orders = require("../models/orders");
 
 module.exports = {
   /* admin home page */
-  admin: (req, res) => {
+  admin: async (req, res) => {
     if (req.session.admin) {
-      /* adminHelper.dashboard(req, res); */
-      res.render("admin/index", { user: false, admin: true, page: "dashboard" });
+      adminHelper.dashboard(req,res);
+      
     } else {
       res.redirect("/admin/adminLogIn");
     }
@@ -22,9 +23,8 @@ module.exports = {
       res.redirect("/admin");
     } else {
       let loginErr = req.session.loggErr;
-      res.render("admin/login", { admin: false, user: false, loginErr });
       req.session.loggErr = null;
-      loginErr = null;
+      res.render("admin/login", { admin: false, user: false, loginErr });
     }
   },
   /* admin login submition case (examin data) */
@@ -180,9 +180,13 @@ module.exports = {
   /* to delete a category */
   deleteBanner: (req, res) => {
     let BannerId = req.params.id;
+    console.log(req.params);
+    console.log("id: ", BannerId);
     adminHelper.delBanner(BannerId).then((response) => {
       res.redirect("/admin/banners");
-    });
+    }).catch((err) => {
+      res.redirect('/user/404')
+    })
   },
 
   // to orders management:
@@ -198,7 +202,6 @@ module.exports = {
 
   // to show the ordered products in orders:
   getOrderedProducts: (req, res) => {
-    console.log("this is working..");
     adminHelper.getOrderedProducts(req, res);
   },
 

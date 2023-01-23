@@ -280,7 +280,6 @@ module.exports = {
       city: req.body.city
     };
     console.log("data: " + dataToAddress);
-    console.log(req.body);
     User.findOneAndUpdate(
       { _id: req.session.user._id },
       { $push: { addresses: dataToAddress }, $set: { updated: Date.now() } },

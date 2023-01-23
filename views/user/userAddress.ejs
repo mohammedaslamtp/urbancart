@@ -345,10 +345,6 @@
 
 
 <script>
-
-    /* $('#full-name').css('border', 'red') */
-    /*$('#country').css('border', 'red') */
-
     const formEl = document.querySelector('#addNewAddress');
     formEl.addEventListener('submit', event => {
         if ($('#fullName').val().trim().length <= 0 || $('#country').val().trim().length <= 0 || $('#pincode').val().trim().length <= 0 || $('#mobile').val().trim().length <= 0 || $('#state').val().trim().length <= 0 || $('#district').val().trim().length <= 0 || $('#city').val().trim().length <= 0 || $('#landMark').val().trim().length <= 0) {
@@ -445,21 +441,4 @@
         }
         event.preventDefault()
     })
-
-    /* function setAsDefualt(addressId) {
-        fetch('/setAsDefualtAddress', {
-            method: 'post',
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify({ addressId: addressId })
-        }).then((data)=>{
-            return data.json()
-        }).then((data)=>{
-            if(data.others==false){
-                console.log('DONE..')
-            }
-        })
-    } */
-
 </script>

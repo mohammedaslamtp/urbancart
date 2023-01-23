@@ -28,7 +28,7 @@
                         </tr>
                     </thead>
                     <tbody>
-
+                            <% let subtotal = 0%>
                         <% for(let i=0;i<salesData.length;i++) { %>
                             <tr>
                                 <td class="text-center"><%= i+1 %></td>
@@ -41,10 +41,11 @@
                                 <td class="text-center">$<%=salesData[i].nonDiscountedAmount - salesData[i].total%>.00</td>
                                 <td class="text-center">$<%=salesData[i].total%>.00</td>
                             </tr>
+                            <% subtotal += salesData[i].total %>
                             <% } %>
                             <tr>
                                 <th colspan="6" class="text-end">Grand Total</th>
-                                <th class="text-center">$<% if(grandTotal) {%><%= grandTotal[0].sum%><% }%>.00</th>
+                                <th class="text-center">$<%= subtotal%>.00</th>
                             </tr>
                     </tbody>
                 </table>

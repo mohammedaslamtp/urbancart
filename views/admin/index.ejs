@@ -60,18 +60,18 @@
             <div class="row g-4">
                 <div class="col-sm-12 col-xl-6">
                     <div class="bg-light text-center rounded p-4">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <h6 class="mb-0">Worldwide Sales</h6>
-                            <a href="">Show All</a>
+                        <div class="d-flex align-items-center justify-content-center mb-4 ">
+                            <h6 class="mb-0">Yearly Sales</h6>
+                            <!-- <a href="">Show All</a> -->
                         </div>
-                        <canvas id="worldwide-sales"></canvas>
+                        <canvas id="worldwide-sales" style="width: 50% !important;"></canvas>
                     </div>
                 </div>
                 <div class="col-sm-12 col-xl-6">
                     <div class="bg-light text-center rounded p-4">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <h6 class="mb-0">Salse & Revenue</h6>
-                            <a href="">Show All</a>
+                        <div class="d-flex align-items-center justify-content-center mb-4">
+                            <h6 class="mb-0">Monthly Sales</h6>
+                            <!-- <a href="">Show All</a> -->
                         </div>
                         <canvas id="salse-revenue"></canvas>
                     </div>
@@ -286,14 +286,14 @@
             <div class="bg-light rounded-top p-4">
                 <div class="row">
                     <div class="col-12 col-sm-6 text-center text-sm-start">
-                        &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                        &copy; <a href="#">URBANCART</a>, All Right Reserved.
                     </div>
                     <div class="col-12 col-sm-6 text-center text-sm-end">
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                        Designed By <a href="">MOHAMMED ASLAM</a>
                         </br>
-                        Distributed By <a class="border-bottom" href="https://themewagon.com"
-                            target="_blank">ThemeWagon</a>
+                        Distributed By <a class="border-bottom" href="https://www.instagram.com/tp._.aslam/"
+                            target="_blank">URBANCART</a>
                     </div>
                 </div>
             </div>
@@ -306,3 +306,56 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 </div>
+
+
+<script>
+
+<% let months = yearlySales.map((val) => { return val._id.month }) %>
+<% let yearlyCount = yearlySales.map((val) => { return val.totalSales }) %>
+
+    console.log(<%=months%>)
+    console.log(<%=yearlyCount %>)
+   
+    // Worldwide Sales Chart
+    let ctx1 = $("#worldwide-sales").get(0).getContext("2d");
+    var myChart1 = new Chart(ctx1, {
+        type: "bar",
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July", "Auguest", "Septemper", "October", "November", "December"],
+            datasets: [
+                {
+                    label: "UK",
+                    data: [<%=yearlyCount %> ],
+                    backgroundColor: "rgba(0, 156, 255, .5)"
+                }
+            ]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+<% let dates = salesData.map((val) => { return val._id.slice(-2) }) %>
+<% let salesCount = salesData.map((val) => { return val.count }) %>
+
+
+    // Salse & Revenue Chart
+    let  ctx2 = $("#salse-revenue").get(0).getContext("2d");
+    var myChart2 = new Chart(ctx2, {
+        type: "line",
+        data: {
+            labels: [<%=dates %>],
+            datasets: [
+                {
+                    label: "Order",
+                    data: [<%=salesCount %>],
+                    backgroundColor: "rgba(0, 156, 255, .3)",
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>

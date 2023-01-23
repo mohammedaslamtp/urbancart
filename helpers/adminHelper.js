@@ -8,8 +8,6 @@ const Orders = require("../models/orders");
 const Banners = require("../models/banners");
 
 module.exports = {
-  // to show
-
   /* to check is admin or not when login */
   isAdmin: (adminData) => {
     return new Promise(async (resolve, reject) => {
@@ -30,6 +28,96 @@ module.exports = {
         console.log("admin login failed!!!");
       }
     });
+  },
+
+  // to set graph in dashboard:
+  dashboard: async (req, res) => {
+    try {
+      const orders = await Orders.find({});
+      let todaySale = await Orders.countDocuments({date:Date.now(),});
+      console.log("Total count:  " + salesDataco);
+
+      // start of month:
+      const startOfMonth = new Date();
+      startOfMonth.setDate(1);
+      startOfMonth.setHours(0, 0, 0, 0);
+
+      // end of month:
+      const endOfMonth = new Date();
+      endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+      endOfMonth.setDate(0);
+      endOfMonth.setHours(23, 59, 59, 999);
+
+      // start of year:
+      const startOfYear = new Date();
+      startOfYear.setMonth(0);
+      startOfYear.setDate(1);
+      console.log("start of year: ", startOfYear);
+
+      // end of year:
+      const endOfYear = new Date();
+      endOfYear.setDate(31);
+      endOfYear.setMonth(11);
+      endOfYear.setHours(23, 59, 59, 999);
+      console.log("end of year: ", endOfYear);
+
+      let salesData = await Orders.aggregate([
+        {
+          $match: {
+            date: {
+              $gte: startOfMonth,
+              $lt: endOfMonth
+            }
+          }
+        },
+        {
+          $group: {
+            _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $sort: { _id: 1 }
+        }
+      ]);
+
+      let yearlySales = await Orders.aggregate([
+        {
+          $match: {
+            $and: [
+              { orderStatus: "Delivered" },
+              {
+                date: {
+                  $gte: startOfYear,
+                  $lt: endOfYear
+                }
+              }
+            ]
+          }
+        },
+        {
+          $group: {
+            _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+            totalSales: { $sum: 1 }
+          }
+        },
+        {
+          $sort: { "_id.month": 1 }
+        }
+      ]);
+      console.log("yearly orders: ", yearlySales);
+
+      res.render("admin/index", {
+        user: false,
+        admin: true,
+        page: "dashboard",
+        salesData,
+        yearlySales
+      });
+    } catch (err) {
+      console.log("Dashboard data finding ERROR! ", err);
+      res.redirect("/user/404");
+    }
   },
 
   /* to add new category */
@@ -254,7 +342,7 @@ module.exports = {
 
   // to banner management:
   banners: async (req, res) => {
-    let banners = await Banners.find({access:true});
+    let banners = await Banners.find({ access: true });
     res.render("admin/banners", { user: false, admin: true, banners, page: "banners" });
   },
 
@@ -264,6 +352,7 @@ module.exports = {
     const banner = new Banners({
       title: req.body.title,
       description: req.body.description,
+      url: req.body.url.replace(/\s+/g, ""),
       image: filePath
     });
     banner.save((err, doc) => {
@@ -280,21 +369,20 @@ module.exports = {
   // to update a banner:
   editBanner: (req, res) => {
     let data = req.body;
+    let url = req.body.url.replace(/\s+/g, "");
     let bannerId = req.params.id;
-    console.log(data);
     let image = req.file;
     if (image) {
       var imagePath = image.path.substring(6);
-      Banners.findByIdAndUpdate(bannerId, { $set: { image: imagePath } }).then(() => {
-        console.log("Banner: image upated...");
-      });
+      Banners.findByIdAndUpdate(bannerId, { $set: { image: imagePath } }).then(() => {});
     }
     Banners.findByIdAndUpdate(
       { _id: bannerId },
       {
         $set: {
           title: data.title,
-          description: data.description
+          description: data.description,
+          url: url
         }
       }
     ).then(() => {
@@ -305,19 +393,27 @@ module.exports = {
   /* to delete a category */
   delBanner: (bannerId) => {
     return new Promise((resolve, reject) => {
-      Banners
-        .findByIdAndUpdate({ _id: objId(bannerId) }, { access: false })
+      Banners.findByIdAndUpdate({ _id: objId(bannerId) }, { access: false })
         .then((response) => {
           resolve(response);
+        })
+        .catch((err) => {
+          console.log("banner deletion ERROR! ", err);
+          res.redirect("/user/404");
         });
     });
   },
 
   // to show the ordered products in orders:
   getOrderedProducts: async (req, res) => {
-    let orderId = req.body.orderId;
-    let orders = await Orders.find().populate("user").populate("cart.productId");
-    console.log("orders: ", orders);
+    try {
+      let orderId = req.body.orderId;
+      let orders = await Orders.find().populate("user").populate("cart.productId");
+      console.log("orders: ", orders);
+    } catch (err) {
+      console.log("get Ordered Products ERROR!", err);
+      res.redirect("/user/404");
+    }
   },
 
   // to orders management:
@@ -328,72 +424,64 @@ module.exports = {
 
   // to update order status:
   updateStatus: (req, res) => {
-    console.log("order id: ", req.body.orderId);
-    let newStatus = req.body.newStatus;
-    console.log("new status fully: ", newStatus);
-    let orderId = req.body.orderId;
-    Orders.findOneAndUpdate(
-      { _id: orderId },
-      { $set: { orderStatus: newStatus } },
-      { new: true },
-      (err, doc) => {
-        if (err) {
-          console.log("new order status updation failed! ", err);
-        } else {
-          console.log("new order updation successful..");
-          console.log(doc);
-          res.json({ current_status: doc.orderStatus, status: true });
+    try {
+      let newStatus = req.body.newStatus;
+      let orderId = req.body.orderId;
+      Orders.findOneAndUpdate(
+        { _id: orderId },
+        { $set: { orderStatus: newStatus } },
+        { new: true },
+        (err, doc) => {
+          if (err) {
+            console.log("new order status updation failed! ", err);
+          } else {
+            console.log("new order updation successful..");
+            console.log(doc);
+            res.json({ current_status: doc.orderStatus, status: true });
+          }
         }
-      }
-    );
+      );
+    } catch (e) {
+      console.log("Status updation ERROR!", e);
+      res.redirect("/user/404");
+    }
   },
 
   // to show sales report:
   toSalesReport: async (req, res) => {
-    let orders = await Orders.find();
-    let salesData = await Orders.aggregate([
-      {
-        $match: {
-          orderStatus: { $eq: "Delivered" },
-          $and: [
-            { date: { $gt: new Date(req.body.fromDate) } },
-            { date: { $lt: new Date(req.body.toDate) } }
-          ]
+    try {
+      let orders = await Orders.find();
+      let salesData = await Orders.aggregate([
+        {
+          $match: {
+            orderStatus: { $eq: "Delivered" },
+            $and: [
+              { date: { $gt: new Date(req.body.fromDate) } },
+              { date: { $lt: new Date(req.body.toDate) } }
+            ]
+          }
+        },
+        {
+          $lookup: {
+            from: "customers",
+            localField: "user",
+            foreignField: "_id",
+            as: "userData"
+          }
+        },
+        {
+          $sort: { createdAt: -1 }
         }
-      },
-      {
-        $lookup: {
-          from: "customers",
-          localField: "user",
-          foreignField: "_id",
-          as: "userData"
-        }
-      },
-      {
-        $sort: { createdAt: -1 }
-      }
-    ]);
-
-    let grandTotal = await Orders.aggregate([
-      {
-        $match: {
-          orderStatus: { $eq: "Delivered" },
-          $and: [
-            { date: { $gt: new Date(req.body.fromDate) } },
-            { date: { $lt: new Date(req.body.toDate) } }
-          ]
-        }
-      },
-      {
-        $group: { _id: null, sum: { $sum: "$total" } }
-      }
-    ]);
-    res.render("admin/salesReport", {
-      user: false,
-      admin: true,
-      grandTotal,
-      salesData,
-      page: "salesReport"
-    });
+      ]);
+      res.render("admin/salesReport", {
+        user: false,
+        admin: true,
+        salesData,
+        page: "salesReport"
+      });
+    } catch (e) {
+      console.log("ERROR!! ", e);
+      res.redirect("/user/404");
+    }
   }
 };
