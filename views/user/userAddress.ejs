@@ -140,8 +140,10 @@
                         href="/userAddress"><b>Address</b></a>
                 </li>
                 <li class="list-group-item"><a class="text-decoration-none text-dark" href="">Oders</a></li>
-                <li class="list-group-item"><a class="text-decoration-none text-dark" href="/wishlist">Whishlist</a></li>
-                <li class="list-group-item "><a class="text-decoration-none text-danger" href="/userLogOut">Logout</a></li>
+                <li class="list-group-item"><a class="text-decoration-none text-dark" href="/wishlist">Whishlist</a>
+                </li>
+                <li class="list-group-item "><a class="text-decoration-none text-danger" href="/userLogOut">Logout</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -188,29 +190,31 @@
                                             <div class="modal-body">
                                                 <form id='editedForm<%= address._id %>'>
 
-                                                    <div class="form-group col-md-12 col-12">
+                                                    <div class="form-group col-12 col-md-12">
                                                         <label for="recipient-name" class="col-form-label">Full
                                                             Name</label>
                                                         <input type="text" class="form-control" name="fullName"
                                                             id="editFullName" value="<%= address.fullName %>">
                                                     </div>
-                                                    <div class="form-group col-md-6 col-12">
+
+                                                    <div class="form-group col-12 col-md-6">
                                                         <label for="message-text" class="col-form-label">State</label>
                                                         <input type="text" class="form-control" name="state"
                                                             id="editState" value="<%=address.state %>">
                                                     </div>
-                                                    <div class="form-group col-md-6 col-12">
+                                                    <div class="form-group col-12 col-md-6">
                                                         <label for="message-text"
                                                             class="col-form-label">District</label>
                                                         <input type="text" class="form-control" name="district"
                                                             id="editDistrict" value="<%=address.district %>">
                                                     </div>
-                                                    <div class="form-group col-md-12 col-12">
+
+                                                    <div class="form-group col-12 col-md-12">
                                                         <label for="message-text" class="col-form-label">City</label>
                                                         <input type="text" class="form-control" name="city"
                                                             id="editCity" value="<%= address.city %>">
                                                     </div>
-                                                    <div class="form-group col-md-12 col-12">
+                                                    <div class="form-group col-12 col-md-12">
                                                         <label for="message-text" class="col-form-label">Land
                                                             Mark</label>
                                                         <input type="text" class="form-control" name="landMark"
@@ -232,8 +236,8 @@
                                                             id="editCountry" value="<%= address.country %>">
                                                     </div>
                                                     <div class="w-100 d-flex justify-content-center">
-                                                        <button type="button"
-                                                            class="btn btn-primary">Save changes</button>
+                                                        <button type="button" class="btn btn-primary">Save
+                                                            changes</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -245,7 +249,7 @@
                                     < % }else{ %>
                                         <button type="button" onclick="setAsDefualt('< %= address._id%>')" >Set as defualt</button>
                                         < % } %> -->
-                            </div> 
+                            </div>
                         </div>
                     </div>
                 </div>

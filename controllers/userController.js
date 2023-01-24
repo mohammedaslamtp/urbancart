@@ -128,52 +128,55 @@ module.exports = {
 
   /* products displaying */
   products: async (req, res) => {
-    let users = req.session.user;
-    let showCategory = await category.find({ access: true });
-    let displayProduct;
-    if (req.query.category) {
-      displayProduct = await products.find({ category: req.query.category });
-    } else if (req.query.q) {
-      displayProduct = await products.find({
-        tittle: { $regex: new RegExp("^" + req.query.q + ".*", "i") }
+    try {
+      let users = req.session.user;
+      let showCategory = await category.find({ access: true });
+      let displayProduct;
+      if (req.query.category) {
+        displayProduct = await products.find({ category: req.query.category });
+      } else if (req.query.q) {
+        displayProduct = await products.find({
+          tittle: { $regex: new RegExp("^" + req.query.q + ".*", "i") }
+        });
+      } else {
+        displayProduct = await products.find({ access: true });
+      }
+      res.render("user/productsList", {
+        user: true,
+        admin: false,
+        users,
+        showCategory,
+        displayProduct,
+        page: "furnitures"
       });
-    } else {
-      displayProduct = await products.find({ access: true });
+    } catch (e) {
+      console.log("user view products ERROR! ", e);
+      res.redirect("/user/404");
     }
-    res.render("user/productsList", {
-      user: true,
-      admin: false,
-      users,
-      showCategory,
-      displayProduct,
-      page: "furnitures"
-    });
   },
 
   /* product detail showing */
   productDetail: async (req, res) => {
     try {
-      
-    
-    let users = req.session.user;
-    let showCategory = await category.find({ access: true });
-    let proId = req.params.id;
-    console.log(proId)
-    let productData = await products.findById({ _id: proId });
-    console.log("product detail :" + productData);
-    res.render("user/productDetail", {
-      user: true,
-      admin: false,
-      showCategory,
-      users,
-      productData,
-      page: "product-detail"
-    });
+      let users = req.session.user;
+      let showCategory = await category.find({ access: true });
+      let proId = req.params.id;
+      console.log(proId);
+      let productData = await products.findById({ _id: proId });
+      console.log("product detail :" + productData);
+      res.render("user/productDetail", {
+        user: true,
+        admin: false,
+        showCategory,
+        users,
+        productData,
+        page: "product-detail"
+      });
     } catch (err) {
-      console.log('product details page ERROR!')
-      console.log(err)
-      res.redirect('/user/404')
-      }
+      console.log("product details page ERROR!");
+      console.log(err);
+      res.redirect("/user/404");
+    }
   },
 
   /* Product searching */
@@ -201,7 +204,11 @@ module.exports = {
 
   /* change cart item quantiy */
   changeQuantity: (req, res) => {
-    userHelpers.changeQuantity(req, res);
+    if (req.session.user) {
+      userHelpers.changeQuantity(req, res);
+    } else {
+      res.redirect("/login");
+    }
   },
 
   /* to show wishlist */
@@ -229,42 +236,52 @@ module.exports = {
 
   /* to user profile section */
   userProfile: async (req, res) => {
-    if (req.session.user) {
-      let users = req.session.user;
-      let showCategory = await category.find({ access: true });
-      res.render("user/userProfile", {
-        user: true, 
-        admin: false,
-        showCategory,
-        users,
-        page: "user-profile"
-      });
-    } else {
-      res.redirect("/login");
+    try {
+      if (req.session.user) {
+        let users = req.session.user;
+        let showCategory = await category.find({ access: true });
+        res.render("user/userProfile", {
+          user: true,
+          admin: false,
+          showCategory,
+          users,
+          page: "user-profile"
+        });
+      } else {
+        res.redirect("/login");
+      }
+    } catch (e) {
+      console.log("user profile ERROR! ", e);
+      res.redirect("/user/404");
     }
   },
 
   /* to user addresses page */
   userAddress: async (req, res) => {
-    if (req.session.user) {
-      let users = req.session.user;
-      let showCategory = await category.find({ access: true });
-      let addresses = await customer.aggregate([
-        { $match: { _id: req.session.user._id } },
-        { $project: { addresses: 1 } },
-        { $unwind: "$addresses" },
-        { $match: { "addresses.isDeleted": false } }
-      ]);
-      res.render("user/userAddress", {
-        user: false,
-        admin: false,
-        showCategory,
-        users,
-        addresses,
-        page: "user-profile"
-      });
-    } else {
-      res.redirect("/login");
+    try {
+      if (req.session.user) {
+        let users = req.session.user;
+        let showCategory = await category.find({ access: true });
+        let addresses = await customer.aggregate([
+          { $match: { _id: req.session.user._id } },
+          { $project: { addresses: 1 } },
+          { $unwind: "$addresses" },
+          { $match: { "addresses.isDeleted": false } }
+        ]);
+        res.render("user/userAddress", {
+          user: false,
+          admin: false,
+          showCategory,
+          users,
+          addresses,
+          page: "user-profile"
+        });
+      } else {
+        res.redirect("/login");
+      }
+    } catch (e) {
+      console.log("user address ERROR! ", e);
+      res.redirect("/user/404");
     }
   },
 
@@ -308,11 +325,6 @@ module.exports = {
   deleteAddress: (req, res) => {
     userHelpers.deleteAddress(req, res);
   },
-
-  // to set as defualt address
-  /* setAsDefualtAddress: (req, res) => {
-    userHelpers.setAsDefualtAddress(req, res);
-  } */
 
   // to checkout page:
   checkout: async (req, res) => {
@@ -361,21 +373,29 @@ module.exports = {
 
   // to veiw orders:
   orders: async (req, res) => {
-    let users = req.session.user;
-    let showCategory = await category.find({ access: true });
-    let orders = await Orders.find().populate("user").populate("cart.productId");
-    res.render("user/viewOrders", {
-      user: true,
-      admin: false,
-      showCategory,
-      users,
-      orders,
-      page: "orders"
-    });
+    try {
+      let users = req.session.user;
+      let showCategory = await category.find({ access: true });
+      let orders = await Orders.find({ user: req.session.user._id })
+        .populate("user")
+        .populate("cart.productId");
+
+      res.render("user/viewOrders", {
+        user: true,
+        admin: false,
+        showCategory,
+        users,
+        orders,
+        page: "orders"
+      });
+    } catch (e) {
+      console.log("user view orders ERROR! ", e);
+      res.redirect("/user/404");
+    }
   },
 
   // to cancel a order:
   cancelOrder: (req, res) => {
-    userHelpers.cancelOrder(req, res)
+    userHelpers.cancelOrder(req, res);
   }
 };

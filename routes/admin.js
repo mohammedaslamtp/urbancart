@@ -32,7 +32,7 @@ const {
   addBanner,
   editBanner,
   deleteBanner
-} = require("../controllers/adminController");
+} = require("../controllers/admin_controller");
 
 router.get("/", admin);
 router.get("/adminLogin", adminLogin);
