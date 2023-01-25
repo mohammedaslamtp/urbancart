@@ -1,18 +1,16 @@
-const express = require("express");
-const mongoose = require("mongoose");
 const adminHelper = require("../helpers/admin_helper");
-const category = require("../models/categoryDataBase");
-const customers = require("../models/userDataBase");
-const products = require("../models/productDataBase");
-const coupons = require("../models/couponsDataBase");
-const Orders = require("../models/orders");
+const category = require("../models/category_database");
+const customers = require("../models/user_database");
+const products = require("../models/product_database");
+const coupons = require("../models/coupons_database");
+/* const Orders = require("../models/orders");
+ */
 
 module.exports = {
   /* admin home page */
   admin: async (req, res) => {
     if (req.session.admin) {
-      adminHelper.dashboard(req,res);
-      
+      adminHelper.dashboard(req, res);
     } else {
       res.redirect("/admin/adminLogIn");
     }
@@ -53,7 +51,7 @@ module.exports = {
   category: async (req, res) => {
     let showCategory = await category.find({ access: true });
     console.log("categories : " + showCategory);
-    res.render("admin/categoryList", {
+    res.render("admin/category_list", {
       user: false,
       admin: true,
       page: "category",
@@ -182,11 +180,14 @@ module.exports = {
     let BannerId = req.params.id;
     console.log(req.params);
     console.log("id: ", BannerId);
-    adminHelper.delBanner(BannerId).then((response) => {
-      res.redirect("/admin/banners");
-    }).catch((err) => {
-      res.redirect('/user/404')
-    })
+    adminHelper
+      .delBanner(BannerId)
+      .then((response) => {
+        res.redirect("/admin/banners");
+      })
+      .catch((err) => {
+        res.redirect("/user/404");
+      });
   },
 
   // to orders management:
@@ -196,7 +197,6 @@ module.exports = {
 
   // to update order status:
   updateStatus: (req, res) => {
-    console.log("calling...");
     adminHelper.updateStatus(req, res);
   },
 
@@ -207,7 +207,7 @@ module.exports = {
 
   // to get date of sales report:
   salesReportDate: (req, res) => {
-    res.render("admin/salesReportDate", { user: false, admin: true, page: "sales" });
+    res.render("admin/sales_report_date", { user: false, admin: true, page: "sales" });
   },
 
   // to get disply sales report:

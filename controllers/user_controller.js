@@ -1,10 +1,10 @@
-const userHelpers = require("../helpers/userHelpers");
+const userHelpers = require("../helpers/user_helpers");
 const mongoose = require("mongoose");
 const otp = require("../utilities/otp");
 const bcrypt = require("bcrypt");
-const customer = require("../models/userDataBase");
-const products = require("../models/productDataBase");
-const category = require("../models/categoryDataBase");
+const customer = require("../models/user_database");
+const products = require("../models/product_database");
+const category = require("../models/category_database");
 const objId = require("mongoose").Types.ObjectId;
 const Orders = require("../models/orders");
 

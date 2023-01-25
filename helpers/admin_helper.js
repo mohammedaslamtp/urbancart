@@ -1,9 +1,9 @@
-const admins = require("../models/amdinDataBase");
-const category = require("../models/categoryDataBase");
-const customers = require("../models/userDataBase");
-const product = require("../models/productDataBase");
+const admins = require("../models/amdin_database");
+const category = require("../models/category_database");
+const customers = require("../models/user_database");
+const product = require("../models/product_database");
 const objId = require("mongoose").Types.ObjectId;
-const coupon = require("../models/couponsDataBase");
+const coupon = require("../models/coupons_database");
 const Orders = require("../models/orders");
 const Banners = require("../models/banners");
 
@@ -577,11 +577,11 @@ module.exports = {
           $sort: { createdAt: -1 }
         }
       ]);
-      res.render("admin/salesReport", {
+      res.render("admin/", {
         user: false,
         admin: true,
         salesData,
-        page: "salesReport"
+        page: "sales_report"
       });
     } catch (e) {
       console.log("ERROR!! ", e);

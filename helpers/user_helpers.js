@@ -1,11 +1,10 @@
-const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const Razorpay = require("razorpay");
-const User = require("../models/userDataBase");
-const category = require("../models/categoryDataBase");
-const products = require("../models/productDataBase");
-const Coupon = require("../models/couponsDataBase");
-const { count } = require("../models/userDataBase");
+const User = require("../models/user_database");
+const category = require("../models/category_database");
+const products = require("../models/product_database");
+const Coupon = require("../models/coupons_database");
+const { count } = require("../models/user_database");
 const Orders = require("../models/orders");
 const objId = require("mongoose").Types.ObjectId;
 // razorpay instance:
