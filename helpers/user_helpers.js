@@ -66,7 +66,7 @@ module.exports = {
       .then((user) => {
         let cartItems = user.cart;
         cartCount = cartItems.items.length;
-        res.render("user/usersCart", {
+        res.render("user/users_cart", {
           user: true,
           admin: false,
           showCategory,

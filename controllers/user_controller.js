@@ -71,7 +71,7 @@ module.exports = {
         res.redirect("/");
       } else {
         otp.sendOtp(phone);
-        res.render("user/otpSection", {
+        res.render("user/otp_section", {
           user: false,
           admin: false,
           phone,
@@ -118,7 +118,6 @@ module.exports = {
       console.log(error);
     }
   },
-
   /* logout router */
   userLogOut: (req, res) => {
     req.session.loggedIn = false;
@@ -141,7 +140,7 @@ module.exports = {
       } else {
         displayProduct = await products.find({ access: true });
       }
-      res.render("user/productsList", {
+      res.render("user/products_list", {
         user: true,
         admin: false,
         users,
@@ -164,7 +163,7 @@ module.exports = {
       console.log(proId);
       let productData = await products.findById({ _id: proId });
       console.log("product detail :" + productData);
-      res.render("user/productDetail", {
+      res.render("user/product_detail", {
         user: true,
         admin: false,
         showCategory,
@@ -240,7 +239,7 @@ module.exports = {
       if (req.session.user) {
         let users = req.session.user;
         let showCategory = await category.find({ access: true });
-        res.render("user/userProfile", {
+        res.render("user/user_profile", {
           user: true,
           admin: false,
           showCategory,
@@ -268,7 +267,7 @@ module.exports = {
           { $unwind: "$addresses" },
           { $match: { "addresses.isDeleted": false } }
         ]);
-        res.render("user/userAddress", {
+        res.render("user/user_address", {
           user: false,
           admin: false,
           showCategory,
@@ -357,7 +356,7 @@ module.exports = {
   orderSuccess: async (req, res) => {
     let showCategory = await category.find({ access: true });
     let users = req.session.user;
-    res.render("user/orderSuccess", {
+    res.render("user/order_success", {
       user: true,
       admin: false,
       showCategory,
@@ -380,7 +379,7 @@ module.exports = {
         .populate("user")
         .populate("cart.productId");
 
-      res.render("user/viewOrders", {
+      res.render("user/view_orders", {
         user: true,
         admin: false,
         showCategory,
