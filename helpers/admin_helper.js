@@ -577,7 +577,11 @@ module.exports = {
           $sort: { createdAt: -1 }
         }
       ]);
+<<<<<<< HEAD
       res.render("admin/sales_report", {
+=======
+      res.render("admin/", {
+>>>>>>> 356cacbb252c085618e86e6ff061689d51625f03
         user: false,
         admin: true,
         salesData,

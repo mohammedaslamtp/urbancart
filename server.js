@@ -63,5 +63,10 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.status(500).render("user/500", { user: false, admin: false });
 });
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 356cacbb252c085618e86e6ff061689d51625f03
 
 app.listen(process.env.PORT || 3000);
