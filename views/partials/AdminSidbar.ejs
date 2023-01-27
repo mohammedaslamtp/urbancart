@@ -18,26 +18,21 @@
         </div>
         <div class="navbar-nav w-100">
             <a href="/admin" class="nav-item nav-link <% if(page==" dashboard"){ %>active <% } %>"><i
-                        class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        class="fa fa-tachometer-alt me-2"></i> Dashboard</a>
             <a href="/admin/category" class="nav-item nav-link <% if(page==" category"){ %>active <% } %>"><i
-                        class="fa fa-th me-2"></i>Category</a>
+                        class="fa fa-th me-2"></i> Category</a>
             <a href="/admin/customers" class="nav-item nav-link <% if(page==" customers"){ %>active <% } %>"><i
-                        class="bi bi-people-fill"></i>Customers</a>
+                        class="bi bi-people-fill"></i> Customers</a>
             <a href="/admin/products" class="nav-item nav-link <% if(page==" products"){ %>active <% } %>"><i
-                        class="fa fa-table me-2"></i>Products</a>
+                        class="fa fa-table me-2"></i> Products</a>
             <a href="/admin/coupons" class="nav-item nav-link <% if(page==" coupons"){ %>active <% } %>"><i
-                        class="bi bi-credit-card-2-back"></i>Coupons</a>
+                        class="bi bi-credit-card-2-back"></i> Coupons</a>
+            <a href="/admin/banners" class="nav-item nav-link <% if(page==" banners"){ %>active <% } %>"><i
+                        class="fa-solid fa-signs-post"></i> Banners</a>
             <a href="/admin/orders" class="nav-item nav-link <% if(page==" orders"){ %>active <% } %>"><i
-                        class="bi bi-list-ol"></i>Orders</a>
-
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-                        class="fa fa-chart-bar me-2"></i>Report</a>
-                <div class="dropdown-menu bg-transparent border-0">
-                    <a href="" class="dropdown-item">Banners</a>
-                    <a href="/admin/salesReportDate" class="dropdown-item">sales report</a>
-                </div>
-            </div>
+                        class="bi bi-list-ol"></i>Orders </a>
+            <a href="/admin/salesReportDate" class="nav-item nav-link <% if(page==" reports"){ %>active <% } %>"><i
+                        class="fa fa-chart-bar me-2"></i>Reports</a>
         </div>
     </nav>
 </div>

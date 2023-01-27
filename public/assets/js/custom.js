@@ -246,5 +246,3 @@ function editAddress(addressId) {
     }
   });
 }
-
-// to collect coupon code and calculate:

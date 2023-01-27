@@ -29,12 +29,10 @@ const {
   placeOrder,
   orderSuccess,
   verifyPayment,
- /*  updateStatus, */
   orders,
   cancelOrder
-  /*  setAsDefualtAddress */
-} = require("../controllers/userController");
-const userDataBase = require("../models/userDataBase");
+} = require("../controllers/user_controller");
+const userDataBase = require("../models/user_database");
 
 router.use(async (req, res, next) => {
   if (req.session.user) {
@@ -74,7 +72,4 @@ router.get("/orders", orders);
 router.post("/cancelOrder", cancelOrder);
 
 
-
-
-// router.post("/setAsDefualtAddress", setAsDefualtAddress);
 module.exports = router;

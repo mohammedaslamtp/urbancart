@@ -1,0 +1,128 @@
+<!--bootstrap.min.css-->
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+<!--populer-products start -->
+<section id="populer-products" class="populer-products">
+    <div class="container d-flex justify-content-center flex-column">
+        <!-- search area start -->
+        <div class="input-group w-auto d-flex justify-content-center ">
+            <form action="" method="get" class="form-outline d-flex">
+                <input id="searchInput" name="q" type="search" class="form-control" placeholder="Search"
+                    onkeyup="searchIt(this.value)" />
+                <button id="search-button" type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+        <br>
+        <div class="d-flex">
+            <ul id="searchData">
+                <!-- <li>suggetions</li> -->
+            </ul>
+        </div>
+        <!-- search area end -->
+    </div>
+</section><!--/.populer-products-->
+<!--populer-products end-->
+
+<!--new-arrivals start -->
+<section id="new-arrivals" class="new-arrivals">
+    <div class="container"><!-- container -->
+        <div class="section-header">
+            <h2>Our Products</h2>
+        </div>
+
+        <div class="new-arrivals-content">
+            <div class="row">
+                <% displayProduct.forEach(el=>{%>
+                    <div class="col-md-3 col-sm-4">
+                        <div class="single-new-arrival">
+                            <div class="single-new-arrival-bg bg-white">
+                                <a href="/productDetail/<%= el._id %> ">
+                                    <img src="<%= el.images[0] %> " alt="new-arrivals images">
+                                </a>
+                                <div class="single-new-arrival-bg-overlay"></div>
+                                <div class="new-arrival-cart">
+                                    <p>
+                                        <span class="lnr lnr-cart"></span>
+                                        <button type="submit" onclick="cartCount('<%= el._id %>');">add <span>to </span>
+                                            cart</button>
+                                    </p>
+                                    <p class="arrival-review pull-right">
+                                        <button onclick="addToWishlist('<%= el._id %>')"><i class="bi bi-suit-heart"
+                                                style="margin-right: 1em;"></i></span></button>
+                                        <span class="lnr lnr-frame-expand"></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <h4 class="pb-0"><a href="/productDetail/<%= el._id %>">
+                                    <%= el.tittle %>
+                                </a></h4>
+                            
+                            <p class="arrival-product-price">$<%= el.price %>
+                            </p>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+    </div><!--/.container-->
+</section><!--/.new-arrivals-->
+<!--new-arrivals end -->
+
+
+
+<script>
+    /* product searching  */
+    function searchIt(str) {
+        fetch('/productSearching?category=' + str, {
+            method: "GET",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify()
+        })
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                document.getElementById('searchData').innerHTML = '';
+                console.log(data)
+                document.getElementById('searchInput')
+                if (str.length == 0) {
+                    document.getElementById('searchData').innerHTML = '';
+                } else {
+                    if (data.length == 0) {
+                        document.getElementById('searchData').innerHTML = 'not found';
+                    } else {
+                        data.forEach(e => {
+                            document.getElementById('searchData').innerHTML += `<li><a href="">${e.tittle}</a></li>`;
+                        });
+                    }
+                }
+                document.getElementById('searchInput')
+            })
+            .catch(e => {
+                console.log("ERROR!!! " + e);
+            })
+    }
+
+    /* add product to wishlist */
+    function addToWishlist(productId) {
+        fetch('/addToWishlist', {
+            method: 'post',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ productId: productId })
+        })
+            .then((data) => {
+                return data.json()
+            })
+            .then((data) => {
+                if (data.succuss) {
+                    console.log("lenth : " + data.length);
+                }
+            })
+    }
+
+</script>

@@ -15,6 +15,7 @@
                             <table class="table text-center" id="orders_table">
                                 <thead>
                                     <tr>
+                                        <th scope="col" class="text-center">NO</th>
                                         <th scope="col" class="text-center">Date</th>
                                         <th scope="col" class="text-center">User</th>
                                         <th scope="col" class="text-center">Payment Method</th>
@@ -26,6 +27,9 @@
                                 <tbody>
                                     <% orders.forEach((el,index)=>{ %>
                                         <tr>
+                                            <td>
+                                                <%= index+1 %> 
+                                            </td>
                                             <td scope="row">
                                                 <%= el.date.getDate()%>/<% if(el.date.getMonth()+1 < 10){ %>0<%=
                                                             el.date.getMonth()+1%>
@@ -75,8 +79,8 @@
                                                             <div class="modal fade" id="productDetails<%= el._id%>"
                                                                 tabindex="-1" role="dialog"
                                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog" role="document">
-                                                                    <div class="modal-content">
+                                                                <div class="modal-dialog d-flex justify-content-center" role="document">
+                                                                    <div class="modal-content" style="width: fit-content;height: 30em;">
                                                                         <div class="modal-header">
                                                                             <h5 class="modal-title"
                                                                                 id="exampleModalLabel">Order
@@ -88,7 +92,7 @@
                                                                             </button>
                                                                         </div>
                                                                         <div class="modal-body w-100 p-4"
-                                                                            style="height: 15em;overflow-y: scroll;">
+                                                                            style="height: 15em;overflow-y: scroll; font-size: small;">
                                                                             <% let userAddr%>
                                                                                 <% for (const key in el.user.addresses){
                                                                                     if(el.user.addresses[key]._id.toString()==el.address.toString()){
@@ -119,18 +123,18 @@
                                                                                                                                 height="150">
                                                                                                                             <div class="text-start ms-2 d-flex flex-column justify-content-center"
                                                                                                                                 style="line-height: 10px;">
-                                                                                                                                <p>Title:
+                                                                                                                                <p style="font-size: small;">Title:
                                                                                                                                     <%=
                                                                                                                                         elem.productId.tittle%>
                                                                                                                                 </p>
-                                                                                                                                <p>Quantity:
+                                                                                                                                <p style="font-size: small;">Quantity:
                                                                                                                                     <%=
                                                                                                                                         elem.qty%>
                                                                                                                                 </p>
-                                                                                                                                <p>Price:
+                                                                                                                                <p style="font-size: small;">Price:
                                                                                                                                     <%=elem.productId.price%>
                                                                                                                                 </p>
-                                                                                                                                <p>Description:
+                                                                                                                                <p style="font-size: small;">Description:
                                                                                                                                     <%=elem.productId.discription%>
                                                                                                                                 </p>
                                                                                                                             </div>

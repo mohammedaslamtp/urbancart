@@ -1,0 +1,205 @@
+<!-- cart new -->
+<section class="h-100 w-100 h-custom" style="margin-top:5em;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+                <div class="card card-registration card-registration-2 align-items-center" style="border-radius: 15px;">
+                    <div class="card-body p-0 w-100">
+                        <% if(orders==null || orders.length==0){ %>
+                            <div class="row g-0 justify-content-center">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-around align-items-center mb-5"
+                                        style="margin-top: 2em;flex-wrap: wrap;">
+                                        <h1 class="fw-bold mb-0 text-muted">orders is Empty</h1>
+                                    </div>
+                                    <% }else{ %>
+                                        <h1 class=" text-muted text-center">Your orders</h1>
+                                        <div>
+
+                                            <table class="table table-borderless table-light w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Address</th>
+                                                        <th scope="col">Total</th>
+                                                        <th scope="col">Payment</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% orders.forEach((el,index)=>{%>
+                                                        <tr>
+                                                            <td scope="col-4">
+                                                                <%=el.date.toString().split('GMT')[0]%>
+                                                            </td>
+                                                            <% let userAddr %>
+                                                                <% for (const key in el.user.addresses){
+                                                                    if(el.user.addresses[key]._id.toString()==el.address.toString()){
+                                                                    userAddr=el.user.addresses[key]; } } %>
+                                                                    <td><i class="bi bi-geo-alt-fill">&nbsp;</i>
+                                                                        <%= userAddr.fullName %>
+                                                                            <%= userAddr.landMark %>,<br>
+                                                                                <%= userAddr.city %>
+                                                                                    ,<%= userAddr.district %>,<br>
+                                                                                        <%= userAddr.state %>,<%=
+                                                                                                userAddr.country %>,
+                                                                                                <%= userAddr.pincode %>
+                                                                                                    ,<br>
+                                                                                                    <%= userAddr.mobile
+                                                                                                        %>
+                                                                    </td>
+                                                                    <td><i class="bi bi-currency-dollar"></i>
+                                                                        <%=el.total%>.00
+                                                                    </td>
+                                                                    <td>
+                                                                        <%=el.paymentMethod%>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span class="badge badge-secondary" style="border: none;">
+                                                                            <%=el.orderStatus%>
+                                                                        </span>
+
+                                                                    </td>
+                                                                    <td>
+                                                                        <% if(el.orderStatus=='Cancelled' ||
+                                                                            el.orderStatus=='Delivered' ){ %>
+                                                                            <% }else{ %>
+                                                                                <button href=""
+                                                                                    onclick="cancelOrder('<%=el._id%>')"><i
+                                                                                        class="bi bi-x-lg text-danger"
+                                                                                        title="Cancel Order"></i></button>
+
+                                                                                <% } %>
+                                                                                    &nbsp;<a href="" data-toggle="modal"
+                                                                                        data-target="#viewOrder<%=el._id%>"><i
+                                                                                            class="bi bi-binoculars-fill text-primary"></i></a>
+                                                                                    <!-- Modal -->
+                                                                                    <div class="modal fade"
+                                                                                        id="viewOrder<%=el._id%>"
+                                                                                        tabindex="-1" role="dialog"
+                                                                                        aria-labelledby="exampleModalLabel"
+                                                                                        aria-hidden="true">
+                                                                                        <div class="modal-dialog"
+                                                                                            role="document">
+                                                                                            <div class="modal-content">
+                                                                                                <div
+                                                                                                    class="modal-header">
+                                                                                                    <h5 class="modal-title"
+                                                                                                        id="exampleModalLabel">
+                                                                                                        Modal
+                                                                                                        title</h5>
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="close"
+                                                                                                        data-dismiss="modal"
+                                                                                                        aria-label="Close">
+                                                                                                        <span
+                                                                                                            aria-hidden="true">&times;</span>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                                <div class="modal-body">
+                                                                                                    <%
+                                                                                                        el.cart.forEach((elem,index)=>
+                                                                                                        { %>
+
+                                                                                                        <div
+                                                                                                            class="d-flex">
+                                                                                                            <img src="<%= elem.productId.images[0]%>"
+                                                                                                                alt=""
+                                                                                                                width="150"
+                                                                                                                height="80">
+                                                                                                            <div class="text-start ms-2 d-flex flex-column justify-content-center"
+                                                                                                                style="line-height: 6px;">
+                                                                                                                <p>
+                                                                                                                    <%=elem.productId.tittle%>
+                                                                                                                </p>
+                                                                                                                <p>
+                                                                                                                    Quantity
+                                                                                                                    X
+                                                                                                                    <%=elem.qty%>
+                                                                                                                </p>
+                                                                                                                <p>
+                                                                                                                    $
+                                                                                                                    <%=elem.productId.price%>
+                                                                                                                        .00
+                                                                                                                </p>
+                                                                                                                <p>
+                                                                                                                    <%=elem.productId.discription%>
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <hr>
+                                                                                                        <% }) %>
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="modal-footer">
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn btn-secondary"
+                                                                                                        data-dismiss="modal">Close</button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                    </td>
+                                                        </tr>
+
+                                                        <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+
+
+                                </div>
+                            </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+<script>
+    const cancelOrder = function (orderId) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to cancel the order!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/cancelOrder', {
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify({ orderId: orderId })
+                }).then((data) => {
+                    return data.json();
+                }).then((data) => {
+                    console.log(data)
+                    Swal.fire(
+                        'Order cancelled',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1500)
+                })
+
+            }
+        })
+
+
+    }
+</script>

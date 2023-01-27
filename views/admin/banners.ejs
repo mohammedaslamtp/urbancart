@@ -1,0 +1,166 @@
+<!-- data table cdn adn style -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+
+<div class="container-xxl position-relative bg-white d-flex p-0">
+
+
+    <!-- Content Start -->
+    <div class="content">
+
+
+        <!-- Table Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <div class="d-flex justify-content-between pb-3">
+                            <h6 class="mb-4">Banners</h6>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#addCategoryForm" data-whatever="@addCategory">Add Banner</button>
+                            <div class="modal fade" id="addCategoryForm" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add Banner</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/admin/addBanner" method="post" enctype="multipart/form-data">
+                                                <div class="form-group">
+                                                    <label for="title" class="col-form-label">Title</label>
+                                                    <input type="text" name="title" class="form-control"
+                                                        id="recipient-name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">Description</label>
+                                                    <textarea class="form-control" name="description"
+                                                        id="message-text"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">URL</label>
+                                                    <input type="url" class="form-control" value="https://example.com"
+                                                        name="url" placeholder="https://example.com"
+                                                        id="message-text"></input>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="image" class="col-form-label">Image</label>
+                                                    <input type="file" name="image" class="form-control" id="">
+                                                </div>
+                                                <button type="submit" class="btn btn-primary ms-auto">Submit</button>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table text-center" id="category_table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">Sr. NO</th>
+                            <th scope="col" class="text-center">Image</th>
+                            <th scope="col" class="text-center">Title</th>
+                            <th scope="col" class="text-center">Descripiton</th>
+                            <th scope="col" class="text-center">URL</th>
+                            <th scope="col" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% banners.forEach((el,index)=>{%>
+                            <tr>
+                                <td>
+                                    <%= index+1 %>
+                                </td>
+                                <td>
+                                    <img style="width: 100px;" src="<%= el.image %> " alt="null">
+                                </td>
+                                <td>
+                                    <%= el.title %>
+                                </td>
+                                <td>
+                                    <%= el.description%>
+                                </td>
+                                <td style="text-transform: lowercase;">
+                                    <%= el.url%>
+                                </td>
+                                <td>
+                                    <a src="/admin/editBanner/<%= el._id %>" class="text-primary" data-toggle="modal"
+                                        data-target="#editBanner<%= el._id %>" data-whatever="@editBanner"
+                                        style="cursor: pointer;"><i class="bi bi-pencil-square"></i></a>
+                                    <div class="modal fade" id="editBanner<%= el._id %>" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Edit Banner</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <form action="/admin/editBanner/<%= el._id %>" method="post"
+                                                        enctype="multipart/form-data">
+                                                        <div class="form-group">
+                                                            <label for="recipient-name"
+                                                                class="col-form-label">Title</label>
+                                                            <input type="text" name="title" class="form-control"
+                                                                id="recipient-name" value="<%= el.title %>">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="message-text"
+                                                                class="col-form-label">Description</label>
+                                                            <input class="form-control" name="description"
+                                                                id="message-text" value="<%= el.description %>"></input>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="message-text" class="col-form-label">URL</label>
+                                                            <input type="url" class="form-control" name="description"
+                                                                id="message-text" value="<%= el.url %>"></input>
+                                                        </div>
+                                                        <div>
+                                                            <img src="<%= el.image %>" alt="">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="image" class="col-form-label">Image</label>
+                                                            <input type="file" name="image" class="form-control" id="">
+                                                        </div>
+                                                        <button type="submit"
+                                                            class="btn btn-primary ms-auto">Submit</button>
+                                                    </form>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="/admin/deleteBanner/<%= el._id %>" class="text-danger"><i
+                                            class="bi bi-trash" style="cursor: pointer;"
+                                            onclick="return confirm('Do you want to delete..?')"></i></a>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $('#category_table').DataTable();
+            });
+        </script>

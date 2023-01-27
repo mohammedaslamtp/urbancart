@@ -21,24 +21,19 @@
                     <div class="container">
                         <div class="welcome-hero-content">
                             <div class="row">
+                               <!--  < % banner.forEach((el)=>{ %>  -->
                                 <div class="col-sm-7">
                                     <div class="single-welcome-hero">
                                         <div class="welcome-hero-txt">
                                             <h4>great design collection</h4>
-                                            <h2>cloth covered accent chair</h2>
+                                            <h2><%= banner[0].title %> </h2>
                                             <p>
                                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
                                                 eiuiana smod tempor ut labore et dolore magna aliqua. Ut enim ad
                                                 minim veniam, quis nostrud exercitation ullamco laboris nisi ut
                                                 aliquip.
                                             </p>
-                                            <div class="packages-price">
-                                                <p>
-                                                    $ 399.00
-                                                    <del>$ 499.00</del>
-                                                </p>
-                                            </div>
-                                            <button class="btn-cart welcome-add-cart"
+                                           <!--  <button class="btn-cart welcome-add-cart"
                                                 onclick="window.location.href='#'">
                                                 <span class="lnr lnr-plus-circle"></span>
                                                 add <span>to</span> cart
@@ -46,119 +41,27 @@
                                             <button class="btn-cart welcome-add-cart welcome-more-info"
                                                 onclick="window.location.href='#'">
                                                 more info
-                                            </button>
+                                            </button> -->
                                         </div><!--/.welcome-hero-txt-->
                                     </div><!--/.single-welcome-hero-->
                                 </div><!--/.col-->
                                 <div class="col-sm-5">
-                                    <div class="single-welcome-hero">
+                                    <div class="single-welcome-hero"> 
                                         <div class="welcome-hero-img">
-                                            <img src="assets/images/slider/slider1.png" alt="slider image">
+                                            <img src="<%= banner[0].image %>" alt="slider image">
                                         </div><!--/.welcome-hero-txt-->
                                     </div><!--/.single-welcome-hero-->
                                 </div><!--/.col-->
                             </div><!--/.row-->
+                           <!--  < % }) %>  -->
+
                         </div><!--/.welcome-hero-content-->
                     </div><!-- /.container-->
                 </div><!-- /.single-slide-item-->
 
             </div><!-- /.item .active-->
 
-            <div class="item">
-                <div class="single-slide-item slide2">
-                    <div class="container">
-                        <div class="welcome-hero-content">
-                            <div class="row">
-                                <div class="col-sm-7">
-                                    <div class="single-welcome-hero">
-                                        <div class="welcome-hero-txt">
-                                            <h4>great design collection</h4>
-                                            <h2>mapple wood accent chair</h2>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                                eiuiana smod tempor ut labore et dolore magna aliqua. Ut enim ad
-                                                minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                                aliquip.
-                                            </p>
-                                            <div class="packages-price">
-                                                <p>
-                                                    $ 199.00
-                                                    <del>$ 299.00</del>
-                                                </p>
-                                            </div>
-                                            <button class="btn-cart welcome-add-cart"
-                                                onclick="window.location.href='#'">
-                                                <span class="lnr lnr-plus-circle"></span>
-                                                add <span>to</span> cart
-                                            </button>
-                                            <button class="btn-cart welcome-add-cart welcome-more-info"
-                                                onclick="window.location.href='#'">
-                                                more info
-                                            </button>
-                                        </div><!--/.welcome-hero-txt-->
-                                    </div><!--/.single-welcome-hero-->
-                                </div><!--/.col-->
-                                <div class="col-sm-5">
-                                    <div class="single-welcome-hero">
-                                        <div class="welcome-hero-img">
-                                            <img src="assets/images/slider/slider2.png" alt="slider image">
-                                        </div><!--/.welcome-hero-txt-->
-                                    </div><!--/.single-welcome-hero-->
-                                </div><!--/.col-->
-                            </div><!--/.row-->
-                        </div><!--/.welcome-hero-content-->
-                    </div><!-- /.container-->
-                </div><!-- /.single-slide-item-->
-
-            </div><!-- /.item .active-->
-
-            <div class="item">
-                <div class="single-slide-item slide3">
-                    <div class="container">
-                        <div class="welcome-hero-content">
-                            <div class="row">
-                                <div class="col-sm-7">
-                                    <div class="single-welcome-hero">
-                                        <div class="welcome-hero-txt">
-                                            <h4>great design collection</h4>
-                                            <h2>valvet accent arm chair</h2>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                                eiuiana smod tempor ut labore et dolore magna aliqua. Ut enim ad
-                                                minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                                aliquip.
-                                            </p>
-                                            <div class="packages-price">
-                                                <p>
-                                                    $ 299.00
-                                                    <del>$ 399.00</del>
-                                                </p>
-                                            </div>
-                                            <button class="btn-cart welcome-add-cart"
-                                                onclick="window.location.href='#'">
-                                                <span class="lnr lnr-plus-circle"></span>
-                                                add <span>to</span> cart
-                                            </button>
-                                            <button class="btn-cart welcome-add-cart welcome-more-info"
-                                                onclick="window.location.href='#'">
-                                                more info
-                                            </button>
-                                        </div><!--/.welcome-hero-txt-->
-                                    </div><!--/.single-welcome-hero-->
-                                </div><!--/.col-->
-                                <div class="col-sm-5">
-                                    <div class="single-welcome-hero">
-                                        <div class="welcome-hero-img">
-                                            <img src="assets/images/slider/slider3.png" alt="slider image">
-                                        </div><!--/.welcome-hero-txt-->
-                                    </div><!--/.single-welcome-hero-->
-                                </div><!--/.col-->
-                            </div><!--/.row-->
-                        </div><!--/.welcome-hero-content-->
-                    </div><!-- /.container-->
-                </div><!-- /.single-slide-item-->
-
-            </div><!-- /.item .active-->
+           
         </div><!-- /.carousel-inner-->
 
     </div><!--/#header-carousel-->
@@ -553,70 +456,6 @@
 
 </section><!--/.feature-->
 <!--feature end -->
-
-<!--blog start -->
-<section id="blog" class="blog">
-    <div class="container">
-        <div class="section-header">
-            <h2>latest blog</h2>
-        </div><!--/.section-header-->
-        <div class="blog-content">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="single-blog">
-                        <div class="single-blog-img">
-                            <img src="assets/images/blog/b1.jpg" alt="blog image">
-                            <div class="single-blog-img-overlay"></div>
-                        </div>
-                        <div class="single-blog-txt">
-                            <h2><a href="#">Why Brands are Looking at Local Language</a></h2>
-                            <h3>By <a href="#">Robert Norby</a> / 18th March 2018</h3>
-                            <p>
-                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-                                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt....
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-sm-4">
-                    <div class="single-blog">
-                        <div class="single-blog-img">
-                            <img src="assets/images/blog/b2.jpg" alt="blog image">
-                            <div class="single-blog-img-overlay"></div>
-                        </div>
-                        <div class="single-blog-txt">
-                            <h2><a href="#">Why Brands are Looking at Local Language</a></h2>
-                            <h3>By <a href="#">Robert Norby</a> / 18th March 2018</h3>
-                            <p>
-                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-                                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt....
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="single-blog">
-                        <div class="single-blog-img">
-                            <img src="assets/images/blog/b3.jpg" alt="blog image">
-                            <div class="single-blog-img-overlay"></div>
-                        </div>
-                        <div class="single-blog-txt">
-                            <h2><a href="#">Why Brands are Looking at Local Language</a></h2>
-                            <h3>By <a href="#">Robert Norby</a> / 18th March 2018</h3>
-                            <p>
-                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-                                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt....
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div><!--/.container-->
-
-</section><!--/.blog-->
-<!--blog end -->
 
 <!-- clients strat -->
 <section id="clients" class="clients">
