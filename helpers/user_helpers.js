@@ -343,7 +343,6 @@ module.exports = {
   checkout: async (req, res) => {
     let showCategory = await category.find({ access: true });
     let user = await User.findById(req.session.user._id);
-    /* let couponPrice = await coupon.findOne() */
     let addresses = user.addresses;
     let noneDeletedAddresses = [];
     addresses.forEach((el, index) => {
@@ -371,8 +370,6 @@ module.exports = {
 
   // to genarate coupon:
   couponGenerate: async (req, res) => {
-    console.log(req.body);
-
     let userId = req.session.user._id;
     let user = await User.findById(userId);
     let totalPrice = parseInt(user.cart.totalPrice);
@@ -382,7 +379,6 @@ module.exports = {
       if (err) {
         console.log("finding error! ", err);
       } else {
-        console.log("coupon :  ", doc);
         if (doc) {
           if (Date.now() >= doc.expiry) {
             response.expiry = true;
@@ -427,7 +423,6 @@ module.exports = {
   placeOrder: async (req, res) => {
     try {
       console.log("body ==> ", req.body);
-      console.log("data========>  ", req.body.data);
       let newTotal = req.body.total;
       let couponCode = req.body.couponCode;
       console.log("user id: ", req.session.user._id);
