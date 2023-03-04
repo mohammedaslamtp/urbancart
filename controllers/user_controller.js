@@ -354,7 +354,7 @@ module.exports = {
   },
 
   // order success showing:
-  <<<<<<<<<: async (req, res) => {
+   orderSuccess : async (req, res) => {
     let showCategory = await category.find({ access: true });
     let users = req.session.user;
     res.render("user/order_success", {
@@ -362,7 +362,7 @@ module.exports = {
       admin: false,
       showCategory,
       users,
-      page: "<<<<<<<<<"
+      page:''
     });
   },
 
